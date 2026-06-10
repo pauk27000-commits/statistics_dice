@@ -1,0 +1,127 @@
+<form class="statistics-settings-shell">
+    <section class="detail-panel settings-panel">
+        <div class="panel-header">
+            <h4>Учет статистики</h4>
+            <span>Можно временно поставить модуль на паузу, чтобы тестовые броски не портили историю</span>
+        </div>
+
+        <label class="settings-user-row settings-toggle-row">
+            <span class="settings-user-copy">
+                <strong>Учитывать новые броски</strong>
+                <small>Если выключить, модуль перестанет записывать статистику и выдавать ачивки до повторного включения</small>
+            </span>
+            <input type="checkbox" name="trackingEnabled" {{#if trackingEnabled}}checked{{/if}}>
+        </label>
+
+        <div class="settings-actions">
+            <button type="submit"><i class="fas fa-save"></i> Сохранить настройки</button>
+        </div>
+    </section>
+
+    <section class="detail-panel settings-panel">
+        <div class="panel-header">
+            <h4>Видимость в статистике</h4>
+            <span>Скрытые игроки пропадают из всех витрин модуля, но их данные сохраняются</span>
+        </div>
+
+        <div class="settings-users">
+            {{#each users}}
+            <label class="settings-user-row">
+                <span class="settings-user-copy">
+                    <strong>{{this.userName}}</strong>
+                    {{#if this.characterName}}
+                    <small>Персонаж: {{this.characterName}}</small>
+                    {{else}}
+                    <small>Персонаж не назначен</small>
+                    {{/if}}
+                </span>
+                <input type="checkbox" name="hiddenUsers.{{this.id}}" {{#if this.isHidden}}checked{{/if}}>
+            </label>
+            {{/each}}
+        </div>
+
+        {{#if hasStaleHiddenUsers}}
+        <div class="settings-stale-note">
+            <strong>Устаревшие скрытые записи</strong>
+            <div class="settings-stale-list">
+                {{#each staleHiddenUsers}}
+                <span class="settings-stale-chip">{{this.id}}</span>
+                {{/each}}
+            </div>
+        </div>
+        {{/if}}
+
+        <div class="settings-actions">
+            <button type="submit"><i class="fas fa-save"></i> Сохранить видимость</button>
+        </div>
+    </section>
+
+    {{#if hasOrphans}}
+    <section class="detail-panel settings-panel">
+        <div class="panel-header">
+            <h4>Отвязанная статистика</h4>
+            <span>Статистика удаленных профилей. Ее можно перепривязать к существующим игрокам.</span>
+        </div>
+        <div class="settings-users">
+            {{#each orphans}}
+            <div class="settings-user-row">
+                <span class="settings-user-copy">
+                    <strong>{{this.originalName}}</strong>
+                    <small>ID: {{this.id}}</small>
+                </span>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <select name="reassign-{{this.id}}">
+                        <option value="">Выберите игрока...</option>
+                        {{#each ../users}}
+                        <option value="{{this.id}}">{{this.userName}}</option>
+                        {{/each}}
+                    </select>
+                    <button type="button" class="reassign-orphan" data-orphan-id="{{this.id}}"><i class="fas fa-link"></i> Привязать</button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+    {{/if}}
+
+    <section class="detail-panel settings-panel">
+        <div class="panel-header">
+            <h4>Импорт / экспорт</h4>
+            <span>Copy-paste формат совместим с текущими JSON-бэкапами</span>
+        </div>
+
+        <div class="settings-copy-grid">
+            <div class="settings-copy-block">
+                <label class="settings-textarea-label" for="statistics-export-text">Экспорт</label>
+                <textarea id="statistics-export-text" name="export-text" readonly>{{exportText}}</textarea>
+                <div class="settings-actions">
+                    <button type="button" class="copy-export"><i class="fas fa-copy"></i> Скопировать</button>
+                </div>
+            </div>
+
+            <div class="settings-copy-block">
+                <label class="settings-textarea-label" for="statistics-import-text">Импорт</label>
+                <textarea id="statistics-import-text" name="import-text" placeholder="Вставьте сюда JSON статистики"></textarea>
+                <div class="settings-actions">
+                    <button type="button" class="import-replace"><i class="fas fa-file-import"></i> Заменить</button>
+                    <button type="button" class="import-merge"><i class="fas fa-layer-group"></i> Объединить</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="detail-panel settings-panel danger-zone">
+        <div class="panel-header">
+            <h4>Опасные действия</h4>
+            <span>Используйте только если действительно хотите очистить накопленную статистику</span>
+        </div>
+
+        <div class="danger-copy">
+            <strong>Полный сброс статистики</strong>
+            <p>Удаляет всю накопленную статистику мира. Настройки скрытия игроков останутся.</p>
+        </div>
+        <div class="settings-actions">
+            <button type="button" class="clear-all-stats"><i class="fas fa-trash"></i> Полный сброс</button>
+        </div>
+    </section>
+</form>

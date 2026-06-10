@@ -1,0 +1,1786 @@
+.window-app.statistics-dice-app,
+.statistics-dice-app {
+    --sd-bg-1: #0f1d22;
+    --sd-bg-2: #1f2b2f;
+    --sd-panel: rgba(12, 20, 25, 0.82);
+    --sd-panel-strong: rgba(18, 28, 34, 0.92);
+    --sd-panel-soft: rgba(255, 255, 255, 0.05);
+    --sd-border: rgba(226, 174, 92, 0.22);
+    --sd-border-strong: rgba(226, 174, 92, 0.42);
+    --sd-text: #f4ebd6;
+    --sd-muted: rgba(244, 235, 214, 0.66);
+    --sd-accent: #e2ae5c;
+    --sd-accent-strong: #ffcb7d;
+    --sd-success: #7ddf9c;
+    --sd-danger: #ff8d79;
+    --sd-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+    color: var(--sd-text);
+    font-family: "Signika", "Trebuchet MS", sans-serif;
+}
+
+.window-app.statistics-dice-app {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.window-app.statistics-dice-app .window-header {
+    background:
+        radial-gradient(circle at top left, rgba(255, 211, 130, 0.18), transparent 32%),
+        linear-gradient(135deg, #0e171d, #1a2428 55%, #2b1e17);
+    border-bottom: 1px solid var(--sd-border);
+    color: var(--sd-text);
+}
+
+.window-app.statistics-dice-app .window-content {
+    padding: 0;
+    background:
+        radial-gradient(circle at top right, rgba(255, 187, 92, 0.15), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(79, 163, 177, 0.14), transparent 32%),
+        linear-gradient(160deg, var(--sd-bg-1), var(--sd-bg-2) 58%, #2a1d17 100%);
+}
+
+.statistics-dice-app .statistics-dice-shell {
+    min-height: 100%;
+    padding: 14px;
+    color: var(--sd-text);
+}
+
+.statistics-dice-app .content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.statistics-dice-app .tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    padding: 8px;
+    margin-bottom: 12px;
+    background: rgba(9, 15, 19, 0.5);
+    border: 1px solid var(--sd-border);
+    border-radius: 16px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.statistics-dice-app .tabs .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    padding: 7px 12px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: var(--sd-muted);
+    font-size: 0.94rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: 180ms ease;
+}
+
+.statistics-dice-app .tabs .item:hover {
+    color: var(--sd-text);
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.statistics-dice-app .tabs .item.active {
+    color: #1b1711;
+    background: linear-gradient(135deg, #f4d18f, #dca04d);
+    border-color: rgba(255, 226, 167, 0.65);
+    box-shadow: 0 10px 24px rgba(220, 160, 77, 0.28);
+}
+
+.statistics-dice-app .stats-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    background:
+        radial-gradient(circle at top right, rgba(255, 196, 104, 0.16), transparent 32%),
+        linear-gradient(145deg, rgba(10, 18, 23, 0.88), rgba(21, 33, 39, 0.92) 56%, rgba(50, 34, 24, 0.9));
+    border: 1px solid var(--sd-border);
+    border-radius: 22px;
+    box-shadow: var(--sd-shadow);
+}
+
+.statistics-dice-app .achievements-hero {
+    margin-bottom: 20px;
+}
+
+.statistics-dice-app .hero-copy {
+    max-width: 700px;
+}
+
+.statistics-dice-app .hero-kicker {
+    display: inline-block;
+    margin-bottom: 5px;
+    color: var(--sd-accent-strong);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-app .hero-copy h2 {
+    margin: 0 0 4px;
+    border: 0;
+    color: var(--sd-text);
+    font-size: 1.5rem;
+    line-height: 1.05;
+    font-weight: 700;
+}
+
+.statistics-dice-app .hero-copy p {
+    margin: 0;
+    color: var(--sd-muted);
+    font-size: 0.86rem;
+    line-height: 1.35;
+}
+
+.statistics-dice-app .hero-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.statistics-dice-app .toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 11px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+}
+
+.statistics-dice-app .toggle-switch .label {
+    color: rgba(244, 235, 214, 0.5);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 180ms ease;
+}
+
+.statistics-dice-app .toggle-switch .label.active {
+    color: var(--sd-text);
+}
+
+.statistics-dice-app .switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+}
+
+.statistics-dice-app .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.statistics-dice-app .slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.12);
+    transition: 180ms ease;
+}
+
+.statistics-dice-app .slider::before {
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    left: 4px;
+    top: 4px;
+    background: linear-gradient(135deg, #fff7e4, #e6c98e);
+    transition: 180ms ease;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.statistics-dice-app input:checked + .slider {
+    background: linear-gradient(135deg, #f1c978, #ce8f40);
+}
+
+.statistics-dice-app input:checked + .slider::before {
+    transform: translateX(22px);
+}
+
+.statistics-dice-app .slider.round {
+    border-radius: 999px;
+}
+
+.statistics-dice-app .slider.round::before {
+    border-radius: 50%;
+}
+
+.statistics-dice-app .gm-buttons,
+.statistics-dice-app .lp-counter,
+.statistics-dice-app .action-buttons,
+.statistics-dice-app .leaderboard-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.statistics-dice-app button {
+    min-height: 32px;
+    border-radius: 10px;
+    transition: 180ms ease;
+}
+
+.statistics-dice-app .gm-buttons button,
+.statistics-dice-app .buy-benny,
+.statistics-dice-app .gift-benny,
+.statistics-dice-app .show-session-summary {
+    min-width: 0;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--sd-text);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+.statistics-dice-app .gm-buttons .reset-session {
+    background: rgba(118, 174, 194, 0.16);
+}
+
+.statistics-dice-app .gm-buttons .reset-stats {
+    background: rgba(210, 92, 72, 0.18);
+    border-color: rgba(255, 140, 121, 0.22);
+}
+
+.statistics-dice-app .gm-buttons button:hover,
+.statistics-dice-app .buy-benny:hover:not(:disabled),
+.statistics-dice-app .gift-benny:hover:not(:disabled),
+.statistics-dice-app .show-session-summary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-color: var(--sd-border-strong);
+    background: rgba(255, 255, 255, 0.11);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+}
+
+.statistics-dice-app .buy-benny {
+    background: rgba(125, 223, 156, 0.18);
+}
+
+.statistics-dice-app .gift-benny {
+    background: rgba(240, 179, 106, 0.18);
+}
+
+.statistics-dice-app .show-session-summary {
+    background: linear-gradient(135deg, rgba(241, 201, 120, 0.26), rgba(121, 231, 255, 0.16));
+}
+
+.statistics-dice-app .buy-benny:disabled,
+.statistics-dice-app .gift-benny:disabled,
+.statistics-dice-app .show-session-summary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.statistics-dice-app .players-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.statistics-dice-app .tracking-paused-banner {
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 168, 111, 0.24);
+    background:
+        radial-gradient(circle at top right, rgba(255, 198, 104, 0.12), transparent 32%),
+        linear-gradient(135deg, rgba(55, 35, 24, 0.94), rgba(35, 26, 20, 0.96));
+    box-shadow: var(--sd-shadow);
+}
+
+.statistics-dice-app .tracking-paused-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.statistics-dice-app .tracking-paused-copy strong {
+    color: #ffd18f;
+    font-size: 0.9rem;
+}
+
+.statistics-dice-app .tracking-paused-copy span {
+    color: rgba(244, 235, 214, 0.76);
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
+.statistics-dice-app .record-feed-panel {
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+}
+
+.statistics-dice-app .leaderboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.statistics-dice-app .leaderboard-panel {
+    min-height: 100%;
+}
+
+.statistics-dice-app .leaderboard-highlight {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 12px;
+    margin: 10px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.statistics-dice-app .leaderboard-kicker {
+    display: inline-block;
+    margin-bottom: 4px;
+    color: var(--sd-accent-strong);
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-app .leaderboard-highlight-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.statistics-dice-app .leaderboard-highlight-copy strong {
+    color: var(--sd-text);
+    font-size: 1.02rem;
+}
+
+.statistics-dice-app .leaderboard-highlight-copy span:last-child {
+    color: var(--sd-muted);
+    font-size: 0.76rem;
+}
+
+.statistics-dice-app .leaderboard-score {
+    min-width: 74px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.22);
+    color: var(--sd-accent-strong);
+    text-align: center;
+    font-size: 1.22rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .leaderboard-list {
+    display: grid;
+    gap: 8px;
+    padding: 0 10px 10px;
+}
+
+.statistics-dice-app .leaderboard-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 11px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statistics-dice-app .leaderboard-rank {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.22);
+    color: var(--sd-accent-strong);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .leaderboard-player {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.statistics-dice-app .leaderboard-player strong {
+    color: var(--sd-text);
+    font-size: 0.84rem;
+}
+
+.statistics-dice-app .leaderboard-player span {
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+}
+
+.statistics-dice-app .leaderboard-points {
+    color: var(--sd-accent-strong);
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .leaderboard-empty {
+    padding: 14px 12px 16px;
+    color: var(--sd-muted);
+    font-size: 0.78rem;
+}
+
+.statistics-dice-settings .statistics-settings-shell {
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+}
+
+.statistics-dice-settings .settings-panel {
+    overflow: hidden;
+}
+
+.statistics-dice-settings .settings-users {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+}
+
+.statistics-dice-settings .settings-user-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 11px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statistics-dice-settings .settings-toggle-row {
+    margin: 10px;
+}
+
+.statistics-dice-settings .settings-user-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.statistics-dice-settings .settings-user-copy strong {
+    color: var(--sd-text);
+    font-size: 0.84rem;
+}
+
+.statistics-dice-settings .settings-user-copy small {
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+}
+
+.statistics-dice-settings .settings-user-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.statistics-dice-settings .settings-stale-note {
+    margin: 0 10px 10px;
+    padding: 10px 11px;
+    border-radius: 12px;
+    background: rgba(255, 166, 92, 0.08);
+    border: 1px solid rgba(255, 166, 92, 0.12);
+}
+
+.statistics-dice-settings .settings-stale-note strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--sd-text);
+    font-size: 0.8rem;
+}
+
+.statistics-dice-settings .settings-stale-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.statistics-dice-settings .settings-stale-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--sd-text);
+    font-size: 0.7rem;
+}
+
+.statistics-dice-settings .settings-copy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 10px;
+}
+
+.statistics-dice-settings .settings-copy-block {
+    display: grid;
+    gap: 8px;
+}
+
+.statistics-dice-settings .settings-textarea-label {
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-settings textarea {
+    min-height: 220px;
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(9, 15, 19, 0.6);
+    color: var(--sd-text);
+    resize: vertical;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.74rem;
+    line-height: 1.45;
+}
+
+.statistics-dice-settings textarea[readonly] {
+    opacity: 0.9;
+}
+
+.statistics-dice-settings .settings-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 10px 10px;
+}
+
+.statistics-dice-settings .settings-actions button {
+    min-width: 0;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--sd-text);
+    font-weight: 700;
+    font-size: 0.8rem;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.statistics-dice-settings .copy-export,
+.statistics-dice-settings button[type="submit"] {
+    background: rgba(125, 223, 156, 0.14);
+}
+
+.statistics-dice-settings .import-replace {
+    background: rgba(240, 179, 106, 0.16);
+}
+
+.statistics-dice-settings .import-merge {
+    background: rgba(121, 231, 255, 0.14);
+}
+
+.statistics-dice-settings .danger-zone {
+    border-color: rgba(255, 141, 121, 0.18);
+    background: linear-gradient(180deg, rgba(255, 141, 121, 0.09), rgba(255, 255, 255, 0.03));
+}
+
+.statistics-dice-settings .danger-copy {
+    padding: 10px 12px 0;
+}
+
+.statistics-dice-settings .danger-copy strong {
+    color: var(--sd-text);
+    font-size: 0.9rem;
+}
+
+.statistics-dice-settings .danger-copy p {
+    margin: 6px 0 0;
+    color: var(--sd-muted);
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+.statistics-dice-settings .clear-all-stats {
+    background: rgba(210, 92, 72, 0.18);
+    border-color: rgba(255, 140, 121, 0.22);
+}
+
+.statistics-dice-app .ranking-positive {
+    color: #79e7ff;
+}
+
+.statistics-dice-app .ranking-negative {
+    color: var(--sd-danger);
+}
+
+.statistics-dice-app .ranking-warm {
+    color: var(--sd-accent-strong);
+}
+
+.statistics-dice-app .record-feed-tab {
+    margin-bottom: 0;
+}
+
+.statistics-dice-app .record-feed-list {
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px 12px;
+}
+
+.statistics-dice-app .record-feed-empty {
+    padding: 14px 12px 16px;
+    color: var(--sd-muted);
+    font-size: 0.8rem;
+}
+
+.statistics-dice-app .record-feed-item {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 9px 10px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.statistics-dice-app .record-feed-item.world-record {
+    border: 1px solid rgba(255, 203, 125, 0.2);
+    background: rgba(255, 203, 125, 0.08);
+}
+
+.statistics-dice-app .record-feed-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.24);
+    color: var(--sd-accent-strong);
+}
+
+.statistics-dice-app .record-feed-title {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    margin-bottom: 3px;
+    color: var(--sd-text);
+    font-size: 0.82rem;
+}
+
+.statistics-dice-app .record-feed-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+}
+
+.statistics-dice-app .record-feed-value {
+    color: var(--sd-accent-strong);
+    font-weight: 700;
+}
+
+.statistics-dice-app .player-card {
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(15, 22, 27, 0.86), rgba(11, 18, 23, 0.92));
+    border: 1px solid var(--sd-border);
+    border-radius: 18px;
+    box-shadow: var(--sd-shadow);
+}
+
+.statistics-dice-app .player-card.expanded {
+    border-color: var(--sd-border-strong);
+}
+
+.statistics-dice-app .player-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 16px 10px;
+    cursor: pointer;
+}
+
+.statistics-dice-app .player-header.no-hover {
+    cursor: default;
+}
+
+.statistics-dice-app .player-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.statistics-dice-app .toggle-pill {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--sd-accent-strong);
+    flex: 0 0 auto;
+}
+
+.statistics-dice-app .toggle-icon {
+    font-size: 0.72rem;
+}
+
+.statistics-dice-app .player-name h3,
+.statistics-dice-app .achievement-header h3 {
+    margin: 0;
+    border: 0;
+    color: var(--sd-text);
+    font-size: 1.06rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .player-subline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    margin-top: 3px;
+    color: var(--sd-muted);
+    font-size: 0.74rem;
+}
+
+.statistics-dice-app .player-header-badges {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.statistics-dice-app .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    color: var(--sd-text);
+    font-size: 0.73rem;
+    font-weight: 600;
+}
+
+.statistics-dice-app .badge-luck {
+    border-color: rgba(255, 207, 125, 0.24);
+}
+
+.statistics-dice-app .action-buttons button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    min-height: 32px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--sd-muted);
+}
+
+.statistics-dice-app .action-buttons button:hover {
+    color: var(--sd-text);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--sd-border-strong);
+}
+
+.statistics-dice-app .player-overview {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(250px, 0.9fr);
+    gap: 12px;
+    padding: 0 16px 14px;
+}
+
+.statistics-dice-app .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.statistics-dice-app .metric-card {
+    padding: 10px 11px 9px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+}
+
+.statistics-dice-app .metric-danger {
+    border-color: rgba(255, 141, 121, 0.18);
+    background: linear-gradient(180deg, rgba(255, 141, 121, 0.12), rgba(255, 255, 255, 0.03));
+}
+
+.statistics-dice-app .metric-label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--sd-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-app .metric-value {
+    color: var(--sd-text);
+    font-size: 1.24rem;
+    line-height: 1;
+}
+
+.statistics-dice-app .accent-success {
+    color: var(--sd-success);
+}
+
+.statistics-dice-app .accent-warm {
+    color: var(--sd-accent-strong);
+}
+
+.statistics-dice-app .insight-panel {
+    display: grid;
+    gap: 8px;
+}
+
+.statistics-dice-app .insight-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.statistics-dice-app .insight-label {
+    color: var(--sd-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-app .insight-block strong {
+    color: var(--sd-text);
+    font-size: 0.96rem;
+}
+
+.statistics-dice-app .insight-meta {
+    color: var(--sd-muted);
+    font-size: 0.76rem;
+}
+
+.statistics-dice-app .dice-table-container {
+    padding: 0 16px 14px;
+}
+
+.statistics-dice-app .detail-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.7fr);
+    gap: 12px;
+}
+
+.statistics-dice-app .detail-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.statistics-dice-app .detail-panel {
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+}
+
+.statistics-dice-app .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    padding: 11px 12px 9px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.statistics-dice-app .panel-header h4 {
+    margin: 0;
+    color: var(--sd-text);
+    font-size: 0.87rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .panel-header span {
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+}
+
+.statistics-dice-app .skill-heatmap {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+    display: grid;
+    gap: 8px;
+}
+
+.statistics-dice-app .skill-heatmap li {
+    padding: 9px 10px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.statistics-dice-app .skill-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.statistics-dice-app .skill-name {
+    color: var(--sd-text);
+    font-weight: 700;
+    font-size: 0.84rem;
+}
+
+.statistics-dice-app .skill-count {
+    color: var(--sd-accent-strong);
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.statistics-dice-app .skill-meta,
+.statistics-dice-app .empty-state,
+.statistics-dice-app .empty-table {
+    color: var(--sd-muted);
+    font-size: 0.74rem;
+}
+
+.statistics-dice-app .benny-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 10px;
+}
+
+.statistics-dice-app .achievement-benny-grid {
+    padding: 0 16px 12px;
+}
+
+.statistics-dice-app .benny-stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 9px 10px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statistics-dice-app .benny-stat-label {
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+    line-height: 1.3;
+}
+
+.statistics-dice-app .benny-stat-value {
+    color: var(--sd-text);
+    font-size: 1rem;
+}
+
+.statistics-dice-app .record-list {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+}
+
+.statistics-dice-app .record-list-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 10px;
+    padding: 9px 10px;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statistics-dice-app .record-list-title {
+    color: var(--sd-text);
+    font-size: 0.76rem;
+}
+
+.statistics-dice-app .record-list-value {
+    color: var(--sd-accent-strong);
+    font-size: 0.96rem;
+}
+
+.statistics-dice-app .record-list-label {
+    grid-column: 1 / -1;
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+}
+
+.statistics-dice-app .record-empty {
+    padding: 10px;
+}
+
+.statistics-dice-app .table-wrap {
+    overflow-x: auto;
+}
+
+.statistics-dice-app .dice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.statistics-dice-app .dice-table th {
+    padding: 9px 8px;
+    color: var(--sd-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.statistics-dice-app .dice-table td {
+    padding: 8px 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--sd-text);
+    text-align: center;
+    vertical-align: top;
+}
+
+.statistics-dice-app .dice-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.statistics-dice-app .die-type {
+    font-weight: 700;
+    color: var(--sd-accent-strong);
+}
+
+.statistics-dice-app .distribution-cell {
+    max-width: 320px;
+    text-align: left;
+    color: var(--sd-muted);
+    word-break: break-word;
+}
+
+.statistics-dice-app .distribution-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.statistics-dice-app .distribution-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--sd-text);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.statistics-dice-app .distribution-chip strong {
+    color: var(--sd-accent-strong);
+    font-size: 0.72rem;
+}
+
+.statistics-dice-app .distribution-chip small {
+    color: var(--sd-muted);
+    font-size: 0.66rem;
+}
+
+.statistics-dice-app .luck-blessed {
+    color: #79e7ff;
+    text-shadow: 0 0 12px rgba(121, 231, 255, 0.3);
+}
+
+.statistics-dice-app .luck-lucky {
+    color: var(--sd-success);
+}
+
+.statistics-dice-app .luck-average {
+    color: var(--sd-text);
+}
+
+.statistics-dice-app .luck-unlucky {
+    color: var(--sd-accent-strong);
+}
+
+.statistics-dice-app .luck-cursed {
+    color: var(--sd-danger);
+    text-shadow: 0 0 12px rgba(255, 141, 121, 0.24);
+}
+
+.statistics-dice-app .achievement-section {
+    background: linear-gradient(180deg, rgba(15, 22, 27, 0.84), rgba(17, 22, 30, 0.94));
+}
+
+.statistics-dice-app .achievement-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-bottom: 8px;
+}
+
+.statistics-dice-app .lp-bank {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.statistics-dice-app .lp-label {
+    color: var(--sd-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-app .lp-value {
+    color: var(--sd-accent-strong);
+    font-size: 1.16rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .progress-duo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 0 16px 12px;
+}
+
+.statistics-dice-app .progress-card {
+    padding: 10px 11px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+}
+
+.statistics-dice-app .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 7px;
+    color: var(--sd-muted);
+    font-size: 0.76rem;
+}
+
+.statistics-dice-app .progress-meta strong {
+    color: var(--sd-text);
+}
+
+.statistics-dice-app .lp-progress-bar {
+    overflow: hidden;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+}
+
+.statistics-dice-app .lp-progress-bar.secondary .lp-progress-fill {
+    background: linear-gradient(90deg, #6cc8ff, #4de1c4);
+}
+
+.statistics-dice-app .lp-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #f0c36b, #ff9e66);
+    box-shadow: 0 0 18px rgba(240, 195, 107, 0.32);
+    transition: width 250ms ease;
+}
+
+.statistics-dice-app .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 7px;
+    padding: 0 16px 14px;
+}
+
+.statistics-dice-app .achievement-card {
+    display: flex;
+    gap: 8px;
+    padding: 9px 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    position: relative;
+    transition: 180ms ease;
+}
+
+.statistics-dice-app .achievement-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.statistics-dice-app .ach-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(0, 0, 0, 0.22);
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.88rem;
+    flex: 0 0 auto;
+}
+
+.statistics-dice-app .ach-info {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.statistics-dice-app .ach-topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 3px;
+}
+
+.statistics-dice-app .ach-name {
+    color: var(--sd-text);
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.statistics-dice-app .ach-rarity {
+    color: var(--sd-muted);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-app .ach-description {
+    min-height: 0;
+    color: var(--sd-muted);
+    font-size: 0.69rem;
+    line-height: 1.2;
+}
+
+.statistics-dice-app .ach-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    margin-top: 5px;
+}
+
+.statistics-dice-app .ach-reward {
+    color: var(--sd-accent-strong);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .ach-status,
+.statistics-dice-app .ach-count {
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.26);
+    color: var(--sd-text);
+    font-size: 0.6rem;
+    font-weight: 700;
+}
+
+.statistics-dice-app .ach-unlocked .ach-icon {
+    color: #ffe19a;
+    background: rgba(226, 174, 92, 0.18);
+}
+
+.statistics-dice-app .ach-unlocked.ach-common {
+    border-color: rgba(183, 183, 183, 0.26);
+}
+
+.statistics-dice-app .ach-unlocked.ach-rare {
+    border-color: rgba(117, 173, 255, 0.32);
+    box-shadow: inset 0 0 0 1px rgba(117, 173, 255, 0.1);
+}
+
+.statistics-dice-app .ach-unlocked.ach-epic {
+    border-color: rgba(211, 141, 255, 0.34);
+    box-shadow: inset 0 0 0 1px rgba(211, 141, 255, 0.1);
+}
+
+.statistics-dice-app .ach-unlocked.ach-legendary {
+    border-color: rgba(255, 201, 120, 0.42);
+    box-shadow: inset 0 0 0 1px rgba(255, 201, 120, 0.14), 0 0 22px rgba(255, 170, 80, 0.16);
+}
+
+.statistics-dice-app .dice-stats-chat {
+    font-family: "Signika", "Trebuchet MS", sans-serif;
+}
+
+@media (max-width: 980px) {
+    .statistics-dice-app .stats-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .statistics-dice-app .stats-hero,
+    .statistics-dice-app .player-overview,
+    .statistics-dice-app .detail-grid,
+    .statistics-dice-app .progress-duo,
+    .statistics-dice-app .player-header,
+    .statistics-dice-app .achievement-header {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-dice-app .stats-hero,
+    .statistics-dice-app .player-header {
+        align-items: stretch;
+    }
+
+    .statistics-dice-app .hero-actions,
+    .statistics-dice-app .player-header-badges,
+    .statistics-dice-app .lp-bank {
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .statistics-dice-app .hero-actions {
+        flex-direction: column;
+    }
+
+    .statistics-dice-app .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .statistics-dice-app .leaderboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-dice-settings .settings-copy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-dice-app .benny-stat-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .statistics-dice-app .statistics-dice-shell {
+        padding: 10px;
+    }
+
+    .statistics-dice-app .stats-hero,
+    .statistics-dice-app .player-header,
+    .statistics-dice-app .player-overview,
+    .statistics-dice-app .dice-table-container,
+    .statistics-dice-app .progress-duo,
+    .statistics-dice-app .achievements-grid {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .statistics-dice-app .stats-hero {
+        padding-top: 18px;
+        padding-bottom: 18px;
+    }
+
+    .statistics-dice-app .tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-dice-app .toggle-switch,
+    .statistics-dice-app .gm-buttons,
+    .statistics-dice-app .lp-counter {
+        flex-wrap: wrap;
+    }
+
+    .statistics-dice-app .metric-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-dice-app .benny-stat-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .statistics-dice-app .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-dice-settings .statistics-settings-shell {
+        padding: 10px;
+    }
+}
+
+.statistics-dice-summary .window-content {
+    overflow: hidden;
+}
+
+.statistics-dice-summary .session-summary-shell {
+    min-height: 100%;
+    padding: 18px;
+    background:
+        radial-gradient(circle at top left, rgba(255, 209, 138, 0.18), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(121, 231, 255, 0.16), transparent 28%),
+        linear-gradient(155deg, rgba(10, 17, 22, 0.96), rgba(18, 29, 36, 0.98) 55%, rgba(54, 35, 23, 0.96));
+}
+
+.statistics-dice-summary .summary-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 100%;
+    padding: 22px;
+    border-radius: 26px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+    animation: sdSummaryReveal 320ms ease;
+}
+
+.statistics-dice-summary .summary-stage-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.statistics-dice-summary .summary-kicker,
+.statistics-dice-summary .summary-drumroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--sd-accent-strong);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-summary .summary-drumroll {
+    animation: sdPulse 1.4s ease-in-out infinite;
+}
+
+.statistics-dice-summary .summary-stage-header h2 {
+    margin: 10px 0 6px;
+    border: 0;
+    color: var(--sd-text);
+    font-size: 2.2rem;
+    line-height: 0.98;
+}
+
+.statistics-dice-summary .summary-stage-header p {
+    margin: 0;
+    color: var(--sd-muted);
+    font-size: 0.92rem;
+    max-width: 560px;
+}
+
+.statistics-dice-summary .summary-stage-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.statistics-dice-summary .summary-stage-meta strong {
+    color: var(--sd-text);
+    font-size: 1.3rem;
+}
+
+.statistics-dice-summary .summary-showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 16px;
+}
+
+.statistics-dice-summary .summary-spotlight,
+.statistics-dice-summary .summary-metric-card,
+.statistics-dice-summary .summary-roster-item {
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.statistics-dice-summary .summary-spotlight {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 10px;
+    min-height: 240px;
+    padding: 22px;
+    border-radius: 24px;
+}
+
+.statistics-dice-summary .summary-spotlight-label {
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-summary .summary-lead {
+    color: var(--sd-text);
+    font-size: 2.4rem;
+    line-height: 0.98;
+}
+
+.statistics-dice-summary .summary-highlight-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.statistics-dice-summary .summary-highlight {
+    font-size: 3rem;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--sd-accent-strong);
+}
+
+.statistics-dice-summary .summary-highlight-cyan {
+    color: #79e7ff;
+}
+
+.statistics-dice-summary .summary-highlight-fire {
+    color: #ffbf6c;
+}
+
+.statistics-dice-summary .summary-highlight-danger {
+    color: var(--sd-danger);
+}
+
+.statistics-dice-summary .summary-highlight-emerald {
+    color: var(--sd-success);
+}
+
+.statistics-dice-summary .summary-highlight-gold {
+    color: var(--sd-accent-strong);
+}
+
+.statistics-dice-summary .summary-accent {
+    color: var(--sd-muted);
+    font-size: 0.84rem;
+}
+
+.statistics-dice-summary .summary-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.statistics-dice-summary .summary-metric-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    border-radius: 18px;
+}
+
+.statistics-dice-summary .summary-metric-card span {
+    color: var(--sd-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.statistics-dice-summary .summary-metric-card strong {
+    color: var(--sd-text);
+    font-size: 1.48rem;
+}
+
+.statistics-dice-summary .summary-metric-card small {
+    color: var(--sd-muted);
+    font-size: 0.76rem;
+    line-height: 1.3;
+}
+
+.statistics-dice-summary .summary-roster {
+    display: grid;
+    gap: 10px;
+}
+
+.statistics-dice-summary .summary-roster-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 16px;
+    border-radius: 18px;
+}
+
+.statistics-dice-summary .summary-rank {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.22);
+    color: var(--sd-accent-strong);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.statistics-dice-summary .summary-roster-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.statistics-dice-summary .summary-roster-copy strong {
+    color: var(--sd-text);
+    font-size: 0.96rem;
+}
+
+.statistics-dice-summary .summary-roster-copy span {
+    color: var(--sd-muted);
+    font-size: 0.76rem;
+}
+
+.statistics-dice-summary .summary-roster-score {
+    color: var(--sd-accent-strong);
+    font-size: 1.06rem;
+    font-weight: 700;
+}
+
+.statistics-dice-summary .summary-controls,
+.statistics-dice-summary .summary-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.statistics-dice-summary .summary-controls button,
+.statistics-dice-summary .summary-dot {
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--sd-text);
+}
+
+.statistics-dice-summary .summary-controls button {
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.statistics-dice-summary .summary-dot {
+    width: 12px;
+    height: 12px;
+    min-height: 12px;
+    padding: 0;
+    border-radius: 999px;
+}
+
+.statistics-dice-summary .summary-dot.active {
+    background: linear-gradient(135deg, #f4d18f, #dca04d);
+    border-color: rgba(255, 226, 167, 0.65);
+    box-shadow: 0 0 18px rgba(220, 160, 77, 0.28);
+}
+
+.statistics-dice-summary .summary-empty {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+@keyframes sdSummaryReveal {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes sdPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 rgba(255, 203, 125, 0);
+    }
+    50% {
+        box-shadow: 0 0 24px rgba(255, 203, 125, 0.24);
+    }
+}
+
+@media (max-width: 860px) {
+    .statistics-dice-summary .summary-stage-header,
+    .statistics-dice-summary .summary-showcase {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .statistics-dice-summary .summary-stage-meta {
+        align-items: flex-start;
+    }
+
+    .statistics-dice-summary .summary-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .statistics-dice-summary .session-summary-shell {
+        padding: 10px;
+    }
+
+    .statistics-dice-summary .summary-stage {
+        padding: 16px;
+    }
+
+    .statistics-dice-summary .summary-stage-header h2 {
+        font-size: 1.72rem;
+    }
+
+    .statistics-dice-summary .summary-lead {
+        font-size: 1.8rem;
+    }
+
+    .statistics-dice-summary .summary-highlight {
+        font-size: 2.2rem;
+    }
+
+    .statistics-dice-summary .summary-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .statistics-dice-summary .summary-roster-item {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .statistics-dice-summary .summary-roster-score {
+        grid-column: 1 / -1;
+    }
+}

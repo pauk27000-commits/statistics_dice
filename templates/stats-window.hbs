@@ -1,0 +1,377 @@
+<div class="statistics-dice-shell">
+    <nav class="tabs" data-group="primary-tabs">
+        <a class="item" data-tab="stats"><i class="fas fa-chart-bar"></i> Статистика</a>
+        <a class="item" data-tab="tops"><i class="fas fa-crown"></i> Топы</a>
+        <a class="item" data-tab="records"><i class="fas fa-medal"></i> Рекорды</a>
+        <a class="item" data-tab="achievements"><i class="fas fa-trophy"></i> Ачивки и магазин</a>
+    </nav>
+
+    {{#unless trackingEnabled}}
+    <section class="tracking-paused-banner">
+        <div class="tracking-paused-copy">
+            <strong><i class="fas fa-pause-circle"></i> Учет статистики на паузе</strong>
+            <span>Новые броски и ачивки сейчас не записываются. Включить учет можно в настройках модуля.</span>
+        </div>
+    </section>
+    {{/unless}}
+
+    <section class="content">
+        <div class="tab" data-tab="stats">
+            <section class="stats-hero">
+                <div class="hero-copy">
+                    <span class="hero-kicker">Savage Worlds · Statistics Dice</span>
+                    <h2>Журнал удачи и хаоса</h2>
+                    <p>Кто тащит, кто любит d6 и кто чаще всех поджигает кубы.</p>
+                </div>
+                <div class="hero-actions">
+                    <div class="toggle-switch">
+                        <span class="label {{#if (eq scope 'session')}}active{{/if}}" data-scope="session">Сессия</span>
+                        <label class="switch">
+                            <input type="checkbox" class="stats-scope-toggle" {{#if (eq scope 'allTime')}}checked{{/if}}>
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="label {{#if (eq scope 'allTime')}}active{{/if}}" data-scope="allTime">Все время</span>
+                    </div>
+                    {{#if isGM}}
+                    <div class="gm-buttons">
+                        <button class="reset-session"><i class="fas fa-hourglass-start"></i> Сессия</button>
+                    </div>
+                    {{/if}}
+                </div>
+            </section>
+
+            <div class="players-list">
+                {{#each players}}
+                <article class="player-card" data-user-id="{{this.id}}">
+                    <div class="player-header" data-collapsible="true">
+                        <div class="player-name">
+                            <span class="toggle-pill"><i class="toggle-icon fas fa-chevron-down"></i></span>
+                            <div>
+                                <h3>{{this.name}}</h3>
+                                <div class="player-subline">
+                                    {{#if this.isSelf}}<span>Это вы</span>{{else}}<span>Игрок мира</span>{{/if}}
+                                    <span>{{this.displayStats.totalDieTypes}} типов кубов</span>
+                                    <span>Средний результат: {{this.displayStats.overallAverage}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="player-header-badges">
+                            <span class="badge badge-luck {{this.displayStats.luck.cssClass}}">
+                                <i class="fas fa-star"></i> {{this.displayStats.luck.tier}}
+                            </span>
+                            {{#if this.displayStats.favoriteDie}}
+                            <span class="badge"><i class="fas fa-dice-d20"></i> Любимый куб: {{this.displayStats.favoriteDie.type}}</span>
+                            {{/if}}
+                            {{#if this.displayStats.topSkill}}
+                            <span class="badge"><i class="fas fa-bolt"></i> Топ навык: {{this.displayStats.topSkill.name}}</span>
+                            {{/if}}
+                        </div>
+                        <div class="action-buttons">
+                            <button class="share-chat" data-userid="{{this.id}}" title="Краткая сводка"><i class="fas fa-comment-alt"></i></button>
+                            <button class="share-extended" data-userid="{{this.id}}" title="Подробная статистика"><i class="fas fa-file-alt"></i></button>
+                            <button class="share-skills" data-userid="{{this.id}}" title="Топ навыков"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="player-overview">
+                        <div class="metric-grid">
+                            <div class="metric-card"><span class="metric-label">Действий</span><strong class="metric-value">{{this.displayStats.totalActions}}</strong></div>
+                            <div class="metric-card"><span class="metric-label">Кубов</span><strong class="metric-value">{{this.displayStats.totalDiceRolled}}</strong></div>
+                            <div class="metric-card"><span class="metric-label">Подъемов</span><strong class="metric-value accent-success">{{this.displayStats.raises}}</strong></div>
+                            <div class="metric-card"><span class="metric-label">Взрывов</span><strong class="metric-value accent-warm">{{this.displayStats.totalExplosions}}</strong></div>
+                            <div class="metric-card {{#if this.displayStats.criticalFailures}}metric-danger{{/if}}">
+                                <span class="metric-label">Крит. провалов</span>
+                                <strong class="metric-value">{{this.displayStats.criticalFailures}}</strong>
+                            </div>
+                        </div>
+
+                        <aside class="insight-panel">
+                            <div class="insight-block">
+                                <span class="insight-label">Лучший навык</span>
+                                <strong>{{#if this.displayStats.topSkill}}{{this.displayStats.topSkill.name}}{{else}}—{{/if}}</strong>
+                                <span class="insight-meta">
+                                    {{#if this.displayStats.topSkill}}
+                                    {{this.displayStats.topSkill.count}} раз · max {{this.displayStats.topSkill.max}}
+                                    {{else}}
+                                    Пока без данных
+                                    {{/if}}
+                                </span>
+                            </div>
+                            <div class="insight-block">
+                                <span class="insight-label">Любимый куб</span>
+                                <strong>{{#if this.displayStats.favoriteDie}}{{this.displayStats.favoriteDie.type}}{{else}}—{{/if}}</strong>
+                                <span class="insight-meta">
+                                    {{#if this.displayStats.favoriteDie}}
+                                    {{this.displayStats.favoriteDie.rolls}} бросков
+                                    {{else}}
+                                    Пока без данных
+                                    {{/if}}
+                                </span>
+                            </div>
+                        </aside>
+                    </div>
+
+                    <div class="dice-table-container" style="display:none;">
+                        <div class="detail-grid">
+                            <div class="detail-stack">
+                                <section class="detail-panel">
+                                    <div class="panel-header"><h4>Топ-5 навыков</h4><span>Самые частые проверки</span></div>
+                                    <ul class="skill-heatmap">
+                                        {{#each this.displayStats.skillUsage}}
+                                        <li>
+                                            <div class="skill-row"><span class="skill-name">{{this.name}}</span><span class="skill-count">{{this.count}} раз</span></div>
+                                            <div class="skill-meta">Максимум: {{this.max}}</div>
+                                        </li>
+                                        {{else}}
+                                        <li class="empty-state">Нет данных по навыкам.</li>
+                                        {{/each}}
+                                    </ul>
+                                </section>
+
+                                <section class="detail-panel">
+                                    <div class="panel-header"><h4>Бенни</h4><span>{{#if (eq ../scope 'session')}}Сессия{{else}}Все время{{/if}}</span></div>
+                                    <div class="benny-stat-grid">
+                                        {{#each this.bennyStats}}
+                                        <div class="benny-stat-card">
+                                            <span class="benny-stat-label"><i class="{{this.icon}}"></i> {{this.label}}</span>
+                                            <strong class="benny-stat-value">{{this.value}}</strong>
+                                        </div>
+                                        {{/each}}
+                                    </div>
+                                </section>
+
+                                <section class="detail-panel">
+                                    <div class="panel-header"><h4>Личные рекорды</h4><span>{{#if (eq ../scope 'session')}}Сессия{{else}}Все время{{/if}}</span></div>
+                                    <div class="record-list">
+                                        {{#each this.recordList}}
+                                        <div class="record-list-item">
+                                            <span class="record-list-title"><i class="{{this.icon}}"></i> {{this.title}}</span>
+                                            <strong class="record-list-value">{{this.value}}</strong>
+                                            <span class="record-list-label">{{this.label}}</span>
+                                        </div>
+                                        {{else}}
+                                        <div class="empty-state record-empty">Пока рекордов нет.</div>
+                                        {{/each}}
+                                    </div>
+                                </section>
+                            </div>
+
+                            <section class="detail-panel">
+                                <div class="panel-header"><h4>Статистика по кубам</h4><span>Распределение и средние значения</span></div>
+                                <div class="table-wrap">
+                                    <table class="dice-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Куб</th>
+                                                <th>Бросков</th>
+                                                <th>Среднее</th>
+                                                <th>Удача</th>
+                                                <th>Взрывов</th>
+                                                <th>Распределение</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each this.displayStats.dice}}
+                                            <tr>
+                                                <td class="die-type">{{this.type}}</td>
+                                                <td>{{this.rolls}}</td>
+                                                <td>{{this.average}}</td>
+                                                <td class="{{this.luckCssClass}}">{{this.luckTier}}</td>
+                                                <td>{{this.explosions}}</td>
+                                                <td class="distribution-cell">
+                                                    <div class="distribution-grid">
+                                                        {{#each this.distributionEntries}}
+                                                        <span class="distribution-chip" title="{{this.percent}}%">
+                                                            <strong>{{this.result}}</strong>
+                                                            <small>x{{this.quantity}}</small>
+                                                        </span>
+                                                        {{/each}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{else}}
+                                            <tr><td colspan="6" class="empty-table">Нет данных по кубам.</td></tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </article>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="tab" data-tab="tops">
+            <section class="stats-hero achievements-hero">
+                <div class="hero-copy">
+                    <span class="hero-kicker">Leaderboards · Savage Worlds</span>
+                    <h2>Топы по группе</h2>
+                    <p>Отдельная витрина удачи, взрывов и критпровалов. Работает поверх текущей статистики без сброса данных.</p>
+                </div>
+                <div class="hero-actions">
+                    <div class="toggle-switch">
+                        <span class="label {{#if (eq scope 'session')}}active{{/if}}" data-scope="session">Сессия</span>
+                        <label class="switch">
+                            <input type="checkbox" class="stats-scope-toggle" {{#if (eq scope 'allTime')}}checked{{/if}}>
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="label {{#if (eq scope 'allTime')}}active{{/if}}" data-scope="allTime">Все время</span>
+                    </div>
+                    <button class="show-session-summary" {{#unless hasScopedSummary}}disabled{{/unless}}>
+                        <i class="fas fa-film"></i> {{#if (eq scope 'session')}}Сводка сессии{{else}}Сводка за все время{{/if}}
+                    </button>
+                </div>
+            </section>
+
+            <div class="leaderboard-grid">
+                {{#each topBoards}}
+                <section class="detail-panel leaderboard-panel {{this.accentClass}}">
+                    <div class="panel-header">
+                        <h4><i class="{{this.icon}}"></i> {{this.title}}</h4>
+                        <span>{{this.subtitle}}</span>
+                    </div>
+                    {{#if this.hasEntries}}
+                    <div class="leaderboard-highlight">
+                        <div class="leaderboard-highlight-copy">
+                            <span class="leaderboard-kicker">{{this.winnerLabel}}</span>
+                            <strong>{{this.winner.name}}</strong>
+                            <span>{{this.winner.secondary}}</span>
+                        </div>
+                        <div class="leaderboard-score {{this.winner.scoreClass}}">{{this.winner.scoreText}}</div>
+                    </div>
+                    <div class="leaderboard-list">
+                        {{#each this.entries}}
+                        <article class="leaderboard-item">
+                            <span class="leaderboard-rank">#{{this.position}}</span>
+                            <div class="leaderboard-player">
+                                <strong>{{this.name}}</strong>
+                                <span>{{this.secondary}}</span>
+                            </div>
+                            <span class="leaderboard-points {{this.scoreClass}}">{{this.scoreText}}</span>
+                        </article>
+                        {{/each}}
+                    </div>
+                    {{else}}
+                    <div class="leaderboard-empty">{{this.emptyText}}</div>
+                    {{/if}}
+                </section>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="tab" data-tab="records">
+            <section class="stats-hero achievements-hero">
+                <div class="hero-copy">
+                    <span class="hero-kicker">Record Board · Savage Worlds</span>
+                    <h2>Лента рекордов</h2>
+                    <p>Последние сильные броски, мировые рекорды и громкие личные вершины.</p>
+                </div>
+            </section>
+
+            {{#if hasRecordFeed}}
+            <section class="record-feed-panel record-feed-tab">
+                <div class="panel-header"><h4>Последние события</h4><span>Обновляется автоматически при новых бросках</span></div>
+                <div class="record-feed-list">
+                    {{#each recordFeed}}
+                    <article class="record-feed-item {{this.levelClass}}">
+                        <div class="record-feed-icon"><i class="{{this.icon}}"></i></div>
+                        <div class="record-feed-content">
+                            <div class="record-feed-title"><strong>{{this.userName}}</strong><span>{{this.title}}</span></div>
+                            <div class="record-feed-meta">
+                                <span class="record-feed-value">{{this.value}}</span>
+                                <span>{{this.label}}</span>
+                                <span>{{this.levelText}}</span>
+                                <span>{{this.timeText}}</span>
+                            </div>
+                        </div>
+                    </article>
+                    {{/each}}
+                </div>
+            </section>
+            {{else}}
+            <section class="record-feed-panel record-feed-tab">
+                <div class="panel-header"><h4>Лента рекордов</h4><span>Пока пусто</span></div>
+                <div class="record-feed-empty">Сделайте несколько бросков, и здесь появятся новые рекорды.</div>
+            </section>
+            {{/if}}
+        </div>
+
+        <div class="tab" data-tab="achievements">
+            <section class="stats-hero achievements-hero">
+                <div class="hero-copy">
+                    <span class="hero-kicker">Luck Points · Trophy Board</span>
+                    <h2>Коллекция достижений</h2>
+                    <p>Компактная витрина ачивок, LP и обмена удачи на бенни.</p>
+                </div>
+            </section>
+
+            <div class="players-list achievements-list">
+                {{#each players}}
+                <article class="player-card achievement-section">
+                    <div class="player-header no-hover achievement-header">
+                        <div>
+                            <h3>{{this.name}}</h3>
+                            <div class="player-subline">
+                                <span>{{this.achievementSummary.unlocked}} / {{this.achievementSummary.total}} открыто</span>
+                                <span>{{this.achievementSummary.completion}}% коллекции</span>
+                                <span>{{this.achievementSummary.legendary}} легендарных</span>
+                            </div>
+                        </div>
+
+                        <div class="lp-counter">
+                            <div class="lp-bank">
+                                <span class="lp-label">Luck Points</span>
+                                <span class="lp-value">{{this.luckPoints}} LP</span>
+                            </div>
+                            <button class="buy-benny" data-userid="{{this.id}}" {{#if (lt this.luckPoints 100)}}disabled{{/if}} title="Купить фишку (100 LP)">
+                                <i class="fas fa-shopping-cart"></i> Купить
+                            </button>
+                            <button class="gift-benny" data-userid="{{this.id}}" {{#if (lt this.luckPoints 200)}}disabled{{/if}} title="Подарить фишку (200 LP)">
+                                <i class="fas fa-gift"></i> Подарить
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="progress-duo">
+                        <div class="progress-card">
+                            <div class="progress-meta"><span>Покупка фишки</span><strong>{{this.economy.nextBuyText}}</strong></div>
+                            <div class="lp-progress-bar"><div class="lp-progress-fill" style="width: {{this.economy.buyProgress}}%;"></div></div>
+                        </div>
+                        <div class="progress-card">
+                            <div class="progress-meta"><span>Подарок фишки</span><strong>{{this.economy.nextGiftText}}</strong></div>
+                            <div class="lp-progress-bar secondary"><div class="lp-progress-fill" style="width: {{this.economy.giftProgress}}%;"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="achievements-grid">
+                        {{#each this.achievements}}
+                        <div class="achievement-card {{this.cssClass}}" title="{{this.description}}">
+                            <div class="ach-icon">
+                                {{#if this.isUnlocked}}<i class="fas fa-trophy"></i>{{else}}<i class="fas fa-lock"></i>{{/if}}
+                            </div>
+                            <div class="ach-info">
+                                <div class="ach-topline">
+                                    <div class="ach-name">{{this.name}}</div>
+                                    <span class="ach-rarity">{{this.rarity}}</span>
+                                </div>
+                                <div class="ach-description">{{this.description}}</div>
+                                <div class="ach-footer">
+                                    <div class="ach-reward">+{{this.lp}} LP</div>
+                                    {{#if this.isUnlocked}}
+                                        {{#if (gt this.count 1)}}<div class="ach-count">x{{this.count}}</div>{{/if}}
+                                    {{else}}
+                                    <div class="ach-status">Locked</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </article>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+</div>

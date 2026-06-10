@@ -1,0 +1,33 @@
+{
+  "id": "statistics_dice",
+  "title": "Dice Statistics (SWADE)",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Miga"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "swade",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/style.css"
+  ],
+  "description": "Tracks dice statistics for SWADE.",
+  "url": "https://github.com/pauk27000-commits/statistics_dice",
+  "manifest": "https://raw.githubusercontent.com/pauk27000-commits/statistics_dice/main/module.json",
+  "download": "https://github.com/pauk27000-commits/statistics_dice/archive/refs/heads/main.zip"
+}

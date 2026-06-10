@@ -1,0 +1,70 @@
+<div class="session-summary-shell {{#if currentSlide}}{{currentSlide.themeClass}}{{/if}}">
+    {{#if hasSlides}}
+    <section class="summary-stage">
+        <header class="summary-stage-header">
+            <div>
+                <span class="summary-kicker">{{currentSlide.kicker}}</span>
+                <h2>{{currentSlide.title}}</h2>
+                <p>{{currentSlide.subtitle}}</p>
+            </div>
+            <div class="summary-stage-meta">
+                <span class="summary-drumroll">Барабанная дробь</span>
+                <strong>{{activeSlide}} / {{totalSlides}}</strong>
+            </div>
+        </header>
+
+        <div class="summary-showcase">
+            <div class="summary-spotlight">
+                <span class="summary-spotlight-label">{{currentSlide.leadLabel}}</span>
+                <strong class="summary-lead">{{currentSlide.lead}}</strong>
+                <div class="summary-highlight-row">
+                    <span class="summary-highlight {{currentSlide.highlightClass}}">{{currentSlide.highlight}}</span>
+                    <span class="summary-accent">{{currentSlide.accentLabel}}</span>
+                </div>
+            </div>
+
+            <div class="summary-metrics">
+                {{#each currentSlide.stats}}
+                <article class="summary-metric-card">
+                    <span>{{this.label}}</span>
+                    <strong>{{this.value}}</strong>
+                    <small>{{this.meta}}</small>
+                </article>
+                {{/each}}
+            </div>
+        </div>
+
+        {{#if currentSlide.roster.length}}
+        <div class="summary-roster">
+            {{#each currentSlide.roster}}
+            <article class="summary-roster-item rank-{{this.position}}">
+                <span class="summary-rank">{{this.position}}</span>
+                <div class="summary-roster-copy">
+                    <strong>{{this.name}}</strong>
+                    <span>{{this.secondary}}</span>
+                </div>
+                <div class="summary-roster-score {{this.scoreClass}}">{{this.primary}}</div>
+            </article>
+            {{/each}}
+        </div>
+        {{/if}}
+
+        <footer class="summary-controls">
+            <button type="button" class="summary-prev"><i class="fas fa-arrow-left"></i> Назад</button>
+            <button type="button" class="summary-auto">{{#if autoPlay}}Стоп автопоказ{{else}}Автопоказ{{/if}}</button>
+            <button type="button" class="summary-next">Дальше <i class="fas fa-arrow-right"></i></button>
+        </footer>
+
+        <div class="summary-dots">
+            {{#each slides}}
+            <button type="button" class="summary-dot {{#if this.isActive}}active{{/if}}" data-index="{{this.index}}" aria-label="Слайд {{this.index}}"></button>
+            {{/each}}
+        </div>
+    </section>
+    {{else}}
+    <section class="summary-stage summary-empty">
+        <h2>Пока нечего показывать</h2>
+        <p>Сначала нужно накопить немного сессионной статистики.</p>
+    </section>
+    {{/if}}
+</div>
