@@ -40,6 +40,7 @@ class SessionSummaryPresentation extends Application {
         html.find('.summary-prev').click(() => this._step(-1));
         html.find('.summary-next').click(() => this._step(1));
         html.find('.summary-auto').click(() => this._toggleAuto());
+        html.find('.summary-share').click(() => this._onShareChat());
         html.find('.summary-dot').click((event) => this._set(Number.parseInt(event.currentTarget.dataset.index || '0', 10)));
     }
 
@@ -75,6 +76,43 @@ class SessionSummaryPresentation extends Application {
         if (this.autoPlay) this._stopAuto();
         else this._startAuto();
         this.render();
+    }
+
+    async _onShareChat() {
+        if (!this.slides.length) return;
+        
+        let content = `<div style="background: linear-gradient(140deg, #0d151c, #2c1d12); border: 1px solid rgba(224, 166, 87, 0.35); border-radius: 12px; color: #f6ead1; overflow: hidden; padding: 12px; font-family: sans-serif;">`;
+        content += `<div style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 12px;">`;
+        content += `<h3 style="margin: 0; color: #e0a657; font-size: 1.2em; border: none;">${this.options.title}</h3>`;
+        content += `</div>`;
+
+        for (const slide of this.slides) {
+            if (slide.themeClass === 'summary-theme-intro' || slide.themeClass === 'summary-theme-finale') continue;
+            if (slide.themeClass === 'summary-theme-clean') continue;
+
+            let icon = '✨';
+            let color = '#f6ead1';
+            if (slide.themeClass === 'summary-theme-luck') { icon = '⭐'; color = '#a7f3b0'; }
+            else if (slide.themeClass === 'summary-theme-explosions') { icon = '🔥'; color = '#ffca7a'; }
+            else if (slide.themeClass === 'summary-theme-failures') { icon = '💀'; color = '#ff8c7a'; }
+            else if (slide.themeClass === 'summary-theme-records') { icon = '🏆'; color = '#ffd700'; }
+
+            content += `<div style="margin-bottom: 10px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border-left: 3px solid ${color};">`;
+            content += `<div style="font-size: 0.85em; text-transform: uppercase; color: rgba(246,234,209,0.7); margin-bottom: 4px;">${icon} ${slide.title}</div>`;
+            content += `<div style="font-size: 1.1em; font-weight: bold;">${slide.lead}: <span style="color: ${color};">${slide.highlight}</span></div>`;
+            if (slide.accentLabel) {
+                content += `<div style="font-size: 0.85em; color: rgba(246,234,209,0.8); margin-top: 2px;">${slide.accentLabel}</div>`;
+            }
+            content += `</div>`;
+        }
+
+        content += `</div>`;
+        
+        ChatMessage.create({
+            user: game.user.id,
+            content: content
+        });
+        ui.notifications.info("Сводка успешно отправлена в чат.");
     }
 }
 
