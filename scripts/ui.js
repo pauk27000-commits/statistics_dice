@@ -863,7 +863,7 @@ export class StatisticsUI extends Application {
         if (!user) return;
         const stats = this._prepareDisplayData(StatisticsStorage.getPlayerData(user.id));
         const rows = stats.dice.length
-            ? stats.dice.map((die, index) => `<tr style="background:${index % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent'};"><td style="padding:6px 8px; font-weight:700; color:#f6ead1;">${die.type}</td><td style="padding:6px 8px;">${die.rolls}</td><td style="padding:6px 8px;">${die.average}</td><td style="padding:6px 8px;" class="${die.luckCssClass}">${die.luckTier}</td><td style="padding:6px 8px;">${die.explosions}</td></tr>`).join('')
+            ? stats.dice.map((die, index) => `<tr style="background:${index % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent'};"><td style="padding:6px 8px; font-weight:700; color:#fbbf24; white-space:nowrap;">${die.type}</td><td style="padding:6px 8px;">${die.rolls}</td><td style="padding:6px 8px;">${die.average}</td><td style="padding:6px 8px;" class="${die.luckCssClass}">${die.luckTier}</td><td style="padding:6px 8px;">${die.explosions}</td></tr>`).join('')
             : '<tr><td colspan="5" style="padding:10px; color:rgba(246,234,209,0.7);">Нет данных по кубам.</td></tr>';
         ChatMessage.create({
             user: game.user.id,
@@ -876,7 +876,7 @@ export class StatisticsUI extends Application {
         if (!user) return;
         const stats = this._prepareDisplayData(StatisticsStorage.getPlayerData(user.id));
         const rows = stats.skillUsage.length
-            ? stats.skillUsage.map((skill, index) => `<tr style="background:${index % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent'};"><td style="padding:6px 8px; text-align:left;">${skill.name}</td><td style="padding:6px 8px; color:#f6ead1; font-weight:700;">${skill.count}</td><td style="padding:6px 8px; color:#a7f3b0;">${skill.max}</td></tr>`).join('')
+            ? stats.skillUsage.map((skill, index) => `<tr style="background:${index % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent'};"><td style="padding:6px 8px; text-align:left;">${skill.name}</td><td style="padding:6px 8px; color:#fbbf24; font-weight:700;">${skill.count}</td><td style="padding:6px 8px; color:#a7f3b0;">${skill.max}</td></tr>`).join('')
             : '<tr><td colspan="3" style="padding:10px; color:rgba(246,234,209,0.7);">Нет данных по навыкам.</td></tr>';
         ChatMessage.create({
             user: game.user.id,
