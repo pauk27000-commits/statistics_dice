@@ -867,7 +867,7 @@ export class StatisticsUI extends Application {
             : '<tr><td colspan="5" style="padding:10px; color:rgba(246,234,209,0.7);">Нет данных по кубам.</td></tr>';
         ChatMessage.create({
             user: game.user.id,
-            content: `${this._buildShareCard(user, stats, 'Подробная статистика')}<table style="width: calc(100% - 28px); margin: -4px 14px 14px; border-collapse: collapse; text-align: center;"><thead><tr style="background: rgba(255,255,255,0.08); color: rgba(246,234,209,0.7); text-transform: uppercase; font-size: 0.78em;"><th style="padding:8px;">Куб</th><th style="padding:8px;">Бросков</th><th style="padding:8px;">Среднее</th><th style="padding:8px;">Удача</th><th style="padding:8px;">Взрывов</th></tr></thead><tbody>${rows}</tbody></table>`
+            content: `${this._buildShareCard(user, stats, 'Подробная статистика')}<table style="width: calc(100% - 28px); margin: -4px 14px 14px; border-collapse: collapse; text-align: center;"><thead><tr style="background: rgba(255,255,255,0.08); color: #1f2937; text-transform: uppercase; font-size: 0.78em; font-weight: bold;"><th style="padding:8px;">Куб</th><th style="padding:8px;">Бросков</th><th style="padding:8px;">Среднее</th><th style="padding:8px;">Удача</th><th style="padding:8px;">Взрывов</th></tr></thead><tbody>${rows}</tbody></table>`
         });
     }
 
@@ -883,7 +883,7 @@ export class StatisticsUI extends Application {
             content: `
                 <div style="background: linear-gradient(140deg, rgba(13, 21, 28, 0.97), rgba(44, 29, 18, 0.93)); border: 1px solid rgba(224, 166, 87, 0.35); border-radius: 16px; color: #f6ead1; overflow: hidden;">
                     <div style="padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08);"><strong style="font-size:1.06em;">Топ навыков: ${user.name}</strong><span style="font-size:0.78em; text-transform:uppercase; color:rgba(246,234,209,0.65);">${this._scopeLabel()}</span></div>
-                    <table style="width: calc(100% - 28px); margin: 14px; border-collapse: collapse; text-align: center;"><thead><tr style="background: rgba(255,255,255,0.08); color: rgba(246,234,209,0.7); text-transform: uppercase; font-size: 0.78em;"><th style="padding:8px; text-align:left;">Навык</th><th style="padding:8px;">Раз</th><th style="padding:8px;">Макс</th></tr></thead><tbody>${rows}</tbody></table>
+                    <table style="width: calc(100% - 28px); margin: 14px; border-collapse: collapse; text-align: center;"><thead><tr style="background: rgba(255,255,255,0.08); color: #1f2937; text-transform: uppercase; font-size: 0.78em; font-weight: bold;"><th style="padding:8px; text-align:left;">Навык</th><th style="padding:8px;">Раз</th><th style="padding:8px;">Макс</th></tr></thead><tbody>${rows}</tbody></table>
                 </div>
             `
         });
