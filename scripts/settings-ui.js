@@ -43,7 +43,12 @@ export class StatisticsSettingsUI extends FormApplication {
             exportText: StatisticsStorage.exportStatsToString(),
             trackingEnabled: config.trackingEnabled !== false,
             enableEconomy: config.enableEconomy !== false,
-            enableAltar: config.enableAltar !== false
+            enableAltar: config.enableAltar !== false,
+            altarTitle: config.altarTitle || 'Алтарь Удачи',
+            altarDescription: config.altarDescription || '',
+            altarRewardDesc: config.altarRewardDesc || '',
+            altarGoal: config.altarGoal || 1000,
+            altarImage: config.altarImage || ''
         };
     }
 
@@ -55,6 +60,7 @@ export class StatisticsSettingsUI extends FormApplication {
         html.find('.import-merge').click((event) => this._onImportStats(event, 'merge'));
         html.find('.clear-all-stats').click(this._onClearAllStats.bind(this));
         html.find('.reassign-orphan').click(this._onReassignOrphan.bind(this));
+        html.find('.altar-reset-defaults').click(this._onAltarResetDefaults.bind(this));
     }
 
     async _updateObject(_event, formData) {
@@ -66,12 +72,23 @@ export class StatisticsSettingsUI extends FormApplication {
         const hiddenUserIds = game.users.contents
             .filter((user) => Boolean(formData[`hiddenUsers.${user.id}`]))
             .map((user) => user.id);
+        
+        const altarTitle = this.element.find('[name="altarTitle"]').val()?.trim() || '';
+        const altarGoal = parseInt(this.element.find('[name="altarGoal"]').val(), 10) || 1000;
+        const altarImage = this.element.find('[name="altarImage"]').val()?.trim() || '';
+        const altarDescription = this.element.find('[name="altarDescription"]').val()?.trim() || '';
+        const altarRewardDesc = this.element.find('[name="altarRewardDesc"]').val()?.trim() || '';
 
         await StatisticsStorage.saveConfig({
             hiddenUserIds: [...staleHiddenIds, ...hiddenUserIds],
             trackingEnabled,
             enableEconomy,
-            enableAltar
+            enableAltar,
+            altarTitle,
+            altarGoal,
+            altarImage,
+            altarDescription,
+            altarRewardDesc
         });
 
         ui.notifications.info('Настройки модуля сохранены.');
@@ -154,6 +171,31 @@ export class StatisticsSettingsUI extends FormApplication {
         );
 
         this.render();
+    }
+
+    async _onAltarResetDefaults(event) {
+        event.preventDefault();
+        
+        Dialog.confirm({
+            title: 'Сброс настроек Алтаря',
+            content: '<p>Вы уверены, что хотите сбросить настройки Алтаря (название, цель, картинку и тексты) к базовым значениям?</p>',
+            yes: async () => {
+                const config = StatisticsStorage.getConfig();
+                const defaultConfig = StatisticsStorage.getDefaultConfig();
+                
+                await StatisticsStorage.saveConfig({
+                    ...config,
+                    altarTitle: defaultConfig.altarTitle,
+                    altarGoal: defaultConfig.altarGoal,
+                    altarImage: defaultConfig.altarImage,
+                    altarDescription: defaultConfig.altarDescription,
+                    altarRewardDesc: defaultConfig.altarRewardDesc
+                });
+                
+                ui.notifications.info('Настройки Алтаря сброшены к базовым.');
+                this.render();
+            }
+        });
     }
 
     async _onClearAllStats(event) {

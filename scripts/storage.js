@@ -52,7 +52,12 @@ export class StatisticsStorage {
             hiddenUserIds: [],
             trackingEnabled: true,
             enableEconomy: true,
-            enableAltar: true
+            enableAltar: true,
+            altarTitle: 'Алтарь Удачи',
+            altarDescription: 'Жертвуйте очки удачи, чтобы снискать их милость. Возможно, когда чаша наполнится, произойдет чудо...',
+            altarRewardDesc: 'Боги благоволят вам! Мастер должен даровать глобальную награду.',
+            altarGoal: 1000,
+            altarImage: ''
         };
     }
 
@@ -435,9 +440,14 @@ export class StatisticsStorage {
 
     static getAltarData() {
         const meta = this.getStats()[this.META_KEY] || {};
+        const config = this.getConfig();
         return {
             lp: meta.altarLP || 0,
-            goal: 1000,
+            goal: config.altarGoal || 1000,
+            title: config.altarTitle || 'Алтарь Удачи',
+            description: config.altarDescription || 'Жертвуйте очки удачи, чтобы снискать милость Богов...',
+            rewardDesc: config.altarRewardDesc || 'Боги благоволят вам!',
+            image: config.altarImage || '',
             contributors: meta.altarContributors || {}
         };
     }

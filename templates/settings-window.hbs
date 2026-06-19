@@ -29,6 +29,44 @@
             <input type="checkbox" name="enableAltar" {{#if enableAltar}}checked{{/if}}>
         </label>
 
+        {{#if enableAltar}}
+        <div class="altar-customization" style="margin-top: 10px; padding: 12px; background: rgba(0,0,0,0.15); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+            <h5 style="margin: 0 0 12px 0; color: #d16ff1; font-size: 0.9rem;"><i class="fas fa-paint-brush"></i> Кастомизация Алтаря</h5>
+            
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; margin-bottom: 10px;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Название Алтаря</strong></span>
+                <input type="text" name="altarTitle" value="{{altarTitle}}" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 4px 8px; border-radius: 4px;">
+            </label>
+
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; margin-bottom: 10px;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Цель (LP)</strong></span>
+                <input type="number" name="altarGoal" value="{{altarGoal}}" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 4px 8px; border-radius: 4px;">
+            </label>
+
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; margin-bottom: 10px;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Изображение (путь или URL)</strong><small>Оставьте пустым для стандартного огонька</small></span>
+                <div style="display: flex; gap: 5px; width: 100%;">
+                    <input type="text" name="altarImage" value="{{altarImage}}" placeholder="Например: modules/statistics_dice/img/my_altar.webp" style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 4px 8px; border-radius: 4px;">
+                    {{filePicker target="altarImage" type="image"}}
+                </div>
+            </label>
+
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; margin-bottom: 10px;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Описание (в процессе сбора)</strong></span>
+                <textarea name="altarDescription" style="width: 100%; height: 60px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 6px 8px; border-radius: 4px; resize: vertical; font-family: inherit;">{{altarDescription}}</textarea>
+            </label>
+
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Текст (когда цель достигнута)</strong></span>
+                <textarea name="altarRewardDesc" style="width: 100%; height: 60px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 6px 8px; border-radius: 4px; resize: vertical; font-family: inherit;">{{altarRewardDesc}}</textarea>
+            </label>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
+                <button type="button" class="altar-reset-defaults" style="flex: none; width: auto; padding: 4px 10px; font-size: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);"><i class="fas fa-undo"></i> Сбросить Алтарь к базовым</button>
+            </div>
+        </div>
+        {{/if}}
+
         <div class="settings-actions">
             <button type="submit"><i class="fas fa-save"></i> Сохранить настройки</button>
         </div>

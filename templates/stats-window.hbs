@@ -413,7 +413,7 @@
             <section class="stats-hero altar-hero">
                 <div class="hero-copy">
                     <span class="hero-kicker">Altar of Fortune</span>
-                    <h2>Алтарь Удачи</h2>
+                    <h2>{{altar.title}}</h2>
                     <p>Совместный вклад ради великой цели.</p>
                 </div>
                 {{#if isGM}}
@@ -427,11 +427,15 @@
                 <div class="altar-left-panel">
                     <div class="altar-visual">
                         <div class="altar-flame {{#if altar.isFull}}full{{/if}}">
+                            {{#if altar.image}}
+                            <img src="{{altar.image}}" alt="{{altar.title}}" style="display: block; margin: 0 auto; max-width: 210px; max-height: 210px; width: auto; height: auto; object-fit: contain; border: none; background: transparent; box-shadow: none;">
+                            {{else}}
                             <i class="fas fa-fire-alt"></i>
+                            {{/if}}
                         </div>
                         <div class="altar-status">
-                            <h3>{{#if altar.isFull}}Чаша полна!{{else}}Боги ждут подношений...{{/if}}</h3>
-                            <p>{{#if altar.isFull}}Боги благоволят вам! Мастер должен даровать глобальную награду.{{else}}Жертвуйте очки удачи, чтобы снискать их милость. Возможно, когда чаша наполнится, произойдет чудо...{{/if}}</p>
+                            <h3>{{#if altar.isFull}}Чаша полна!{{else}}{{altar.title}}{{/if}}</h3>
+                            <p>{{#if altar.isFull}}{{altar.rewardDesc}}{{else}}{{altar.description}}{{/if}}</p>
                         </div>
                     </div>
 
