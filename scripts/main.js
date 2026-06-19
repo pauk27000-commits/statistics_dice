@@ -66,7 +66,7 @@ Hooks.once('ready', () => {
         if (!game.user.isGM) return; // Only GM processes these
 
         const flags = message.flags?.statistics_dice || {};
-        const { buyRequest, userId, giftRequest, buyerId, targetId } = flags;
+        const { buyRequest, userId, giftRequest, buyerId, targetId, altarDonateRequest, amount } = flags;
 
         if (buyRequest && userId) {
             console.log(`Statistics Dice | GM received buy request from ${userId}`);
@@ -77,6 +77,12 @@ Hooks.once('ready', () => {
         if (giftRequest && buyerId && targetId) {
             console.log(`Statistics Dice | GM received gift request from ${buyerId} to ${targetId}`);
             await StatisticsStorage.buyBennyGift(buyerId, targetId);
+            await message.delete();
+        }
+
+        if (altarDonateRequest && userId && amount) {
+            console.log(`Statistics Dice | GM received altar donate request from ${userId} for ${amount}`);
+            await StatisticsStorage.donateAltarLP(userId, amount);
             await message.delete();
         }
     });

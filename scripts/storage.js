@@ -50,7 +50,9 @@ export class StatisticsStorage {
     static getDefaultConfig() {
         return {
             hiddenUserIds: [],
-            trackingEnabled: true
+            trackingEnabled: true,
+            enableEconomy: true,
+            enableAltar: true
         };
     }
 
@@ -429,6 +431,59 @@ export class StatisticsStorage {
             stats.giftsReceived++;
             stats.benniesGranted++;
         });
+    }
+
+    static getAltarData() {
+        const meta = this.getStats()[this.META_KEY] || {};
+        return {
+            lp: meta.altarLP || 0,
+            goal: 1000,
+            contributors: meta.altarContributors || {}
+        };
+    }
+
+    static async donateAltarLP(userId, amount) {
+        const allStats = this.getStats();
+        const playerData = this.getPlayerData(userId);
+        const user = game.users.get(userId);
+
+        if (!user) return;
+
+        if ((playerData.luckPoints || 0) < amount) {
+            if (game.user.isGM) {
+                ui.notifications.warn(`У игрока ${user.name} недостаточно LP для пожертвования!`);
+            }
+            return;
+        }
+
+        playerData.luckPoints -= amount;
+        
+        const meta = allStats[this.META_KEY] || {};
+        meta.altarLP = (meta.altarLP || 0) + amount;
+        meta.altarContributors = meta.altarContributors || {};
+        meta.altarContributors[userId] = (meta.altarContributors[userId] || 0) + amount;
+        allStats[this.META_KEY] = meta;
+        allStats[userId] = playerData;
+
+        ChatMessage.create({
+            content: `
+                <div style="text-align:center; font-weight:bold; border: 2px solid #9c27b0; border-radius: 8px; padding: 10px; background: rgba(156, 39, 176, 0.1);">
+                    <h3 style="color: #d16ff1; font-family: Georgia, serif; font-size: 1.2rem; border-bottom: none;"><i class="fas fa-fire"></i> Подношение Богам</h3>
+                    <p style="font-size: 0.95rem;"><strong>${user.name}</strong> приносит <strong>${amount} LP</strong> на Алтарь Удачи.</p>
+                </div>`
+        });
+
+        await this.saveAllStats(allStats);
+    }
+
+    static async resetAltar() {
+        if (!game.user.isGM) return;
+        const allStats = this.getStats();
+        const meta = allStats[this.META_KEY] || {};
+        meta.altarLP = 0;
+        meta.altarContributors = {};
+        allStats[this.META_KEY] = meta;
+        await this.saveAllStats(allStats);
     }
 
     static async buyBennyForPlayer(userId) {

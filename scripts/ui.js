@@ -365,6 +365,32 @@ export class StatisticsUI extends Application {
                 secondary: `${profile.scopeData.totalActions} действий · ${profile.scopeData.totalActions ? Math.round((profile.scopeData.criticalFailures / profile.scopeData.totalActions) * 100) : 0}% критов`
             }));
 
+        const achievementEntries = scoped
+            .map((profile) => {
+                const unlocked = Object.values(profile.playerData.achievements || {}).filter(Boolean).length;
+                return { profile, unlocked };
+            })
+            .filter((p) => p.unlocked > 0)
+            .map(({ profile, unlocked }) => ({
+                id: profile.id,
+                name: profile.name,
+                value: unlocked,
+                scoreText: `${unlocked}`,
+                scoreClass: 'ranking-warm',
+                secondary: 'Открыто ачивок'
+            }));
+
+        const lpEntries = scoped
+            .filter((profile) => (profile.playerData.luckPoints || 0) > 0)
+            .map((profile) => ({
+                id: profile.id,
+                name: profile.name,
+                value: profile.playerData.luckPoints || 0,
+                scoreText: `${profile.playerData.luckPoints} LP`,
+                scoreClass: 'ranking-positive',
+                secondary: 'Накоплено удачи'
+            }));
+
         return [
             this._buildBoard({
                 id: 'luck',
@@ -392,7 +418,25 @@ export class StatisticsUI extends Application {
                 emptyText: `За ${scopeLabel} критпровалов пока нет.`,
                 accentClass: 'board-failures',
                 winnerLabel: 'Магнит катастроф'
-            }, failureEntries)
+            }, failureEntries),
+            this._buildBoard({
+                id: 'achievements',
+                icon: 'fas fa-trophy',
+                title: 'Охотники за ачивками',
+                subtitle: 'Те, кто открыл больше всего достижений.',
+                emptyText: 'Пока никто ничего не открыл.',
+                accentClass: 'board-achievements',
+                winnerLabel: 'Коллекционер'
+            }, achievementEntries),
+            this._buildBoard({
+                id: 'lp',
+                icon: 'fas fa-gem',
+                title: 'Магнаты LP',
+                subtitle: 'Самые богатые на очки удачи.',
+                emptyText: 'У всех по нулям.',
+                accentClass: 'board-lp',
+                winnerLabel: 'Адепт Фортуны'
+            }, lpEntries)
         ];
     }
 
@@ -656,13 +700,43 @@ export class StatisticsUI extends Application {
     getData() {
         const { players, profiles, isGM } = this._preparePlayersContext();
         const recordFeed = this._prepareRecordFeed();
+        
+        const globalRecords = [
+            this._topRecord(profiles, 'highestTotal', 'allTime'),
+            this._topRecord(profiles, 'highestDamage', 'allTime'),
+            this._topRecord(profiles, 'longestAceChain', 'allTime')
+        ].filter(Boolean);
+
+        const config = StatisticsStorage.getConfig();
+        const enableEconomy = config.enableEconomy !== false;
+        const enableAltar = config.enableAltar !== false;
+        
+        const altar = StatisticsStorage.getAltarData();
+        altar.progressPercent = Math.min(100, Math.round((altar.lp / altar.goal) * 100));
+        altar.isFull = altar.lp >= altar.goal;
+        altar.topContributors = Object.entries(altar.contributors || {})
+            .map(([id, amount]) => {
+                const p = profiles.find(p => p.id === id);
+                return { name: p ? p.name : 'Неизвестный', amount };
+            })
+            .sort((a, b) => b.amount - a.amount);
+
+        const currentUserData = StatisticsStorage.getPlayerData(game.user.id);
+        const currentUserLP = currentUserData.luckPoints || 0;
+
         return {
             players,
             isGM,
+            currentUserLP,
             scope: this.scope,
             trackingEnabled: StatisticsStorage.isTrackingEnabled(),
+            enableEconomy,
+            enableAltar,
+            altar,
             recordFeed,
+            globalRecords,
             hasRecordFeed: recordFeed.length > 0,
+            hasGlobalRecords: globalRecords.length > 0,
             topBoards: this._prepareRankings(profiles, this.scope),
             hasScopedSummary: this._prepareScopedSummary(profiles, this.scope).hasData
         };
@@ -692,17 +766,32 @@ export class StatisticsUI extends Application {
         html.find('.share-chat').click(this._onShareChat.bind(this));
         html.find('.share-extended').click(this._onShareExtended.bind(this));
         html.find('.share-skills').click(this._onShareSkills.bind(this));
-        html.find('.reset-session').click(this._onResetSession.bind(this));
         html.find('.buy-benny').click(this._onBuyBenny.bind(this));
         html.find('.gift-benny').click(this._onGiftBenny.bind(this));
-        html.find('.show-session-summary').click(this._onShowSessionSummary.bind(this));
+        html.find('.reset-session').click(this._onResetSession.bind(this));
+        html.find('.altar-donate').click(this._onAltarDonate.bind(this));
+        html.find('.altar-reset').click(this._onAltarReset.bind(this));
 
         html.find('.player-header[data-collapsible="true"]').click((event) => {
             if ($(event.target).closest('button, a').length) return;
             const card = $(event.currentTarget).closest('.player-card');
             card.toggleClass('expanded');
-            card.find('.dice-table-container').slideToggle(250);
+            card.find('.player-details-container').slideToggle(250);
             card.find('.toggle-icon').toggleClass('fa-chevron-down fa-chevron-up');
+        });
+
+        html.find('.toggle-dice-stats').click((event) => {
+            const userId = $(event.currentTarget).data('userid');
+            const container = html.find(`#dice-table-${userId}`);
+            container.slideToggle(200);
+            const icon = $(event.currentTarget).find('i');
+            if (icon.hasClass('fa-dice')) {
+                icon.removeClass('fa-dice').addClass('fa-times');
+                $(event.currentTarget).html('<i class="fas fa-times"></i> Скрыть статистику');
+            } else {
+                icon.removeClass('fa-times').addClass('fa-dice');
+                $(event.currentTarget).html('<i class="fas fa-dice"></i> Показать статистику по кубам');
+            }
         });
     }
 
@@ -773,6 +862,35 @@ export class StatisticsUI extends Application {
             },
             default: 'cancel'
         }).render(true);
+    }
+
+    async _onAltarDonate(event) {
+        const button = $(event.currentTarget);
+        const amount = parseInt(button.data('amount'), 10);
+        if (game.user.isGM) {
+            return StatisticsStorage.donateAltarLP(game.user.id, amount);
+        }
+        
+        ui.notifications.info(`Отправлен запрос на пожертвование ${amount} LP...`);
+        ChatMessage.create({
+            content: `Запрос на пожертвование ${amount} LP в Алтарь Удачи...`,
+            whisper: ChatMessage.getWhisperRecipients('GM'),
+            flags: { 
+                'statistics_dice.altarDonateRequest': true, 
+                'statistics_dice.userId': game.user.id,
+                'statistics_dice.amount': amount 
+            }
+        });
+    }
+
+    async _onAltarReset(event) {
+        if (!game.user.isGM) return;
+        Dialog.confirm({
+            title: "Опустошить чашу Алтаря",
+            content: "<p>Вы уверены, что хотите обнулить счетчик Алтаря Удачи?</p><p>Делайте это только после выдачи глобальной награды!</p>",
+            yes: () => StatisticsStorage.resetAltar(),
+            defaultYes: false
+        });
     }
 
     async _onExportStats() {

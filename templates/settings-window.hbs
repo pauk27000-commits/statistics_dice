@@ -13,6 +13,22 @@
             <input type="checkbox" name="trackingEnabled" {{#if trackingEnabled}}checked{{/if}}>
         </label>
 
+        <label class="settings-user-row settings-toggle-row">
+            <span class="settings-user-copy">
+                <strong>Экономика LP и Бенни</strong>
+                <small>Включает счетчик LP, ачивки и возможность покупки фишек</small>
+            </span>
+            <input type="checkbox" name="enableEconomy" {{#if enableEconomy}}checked{{/if}}>
+        </label>
+
+        <label class="settings-user-row settings-toggle-row">
+            <span class="settings-user-copy">
+                <strong>Алтарь Удачи</strong>
+                <small>Включает глобальный котел для пожертвований (требует включенной экономики)</small>
+            </span>
+            <input type="checkbox" name="enableAltar" {{#if enableAltar}}checked{{/if}}>
+        </label>
+
         <div class="settings-actions">
             <button type="submit"><i class="fas fa-save"></i> Сохранить настройки</button>
         </div>

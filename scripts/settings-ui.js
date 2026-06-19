@@ -41,7 +41,9 @@ export class StatisticsSettingsUI extends FormApplication {
             staleHiddenUsers,
             hasStaleHiddenUsers: staleHiddenUsers.length > 0,
             exportText: StatisticsStorage.exportStatsToString(),
-            trackingEnabled: config.trackingEnabled !== false
+            trackingEnabled: config.trackingEnabled !== false,
+            enableEconomy: config.enableEconomy !== false,
+            enableAltar: config.enableAltar !== false
         };
     }
 
@@ -59,13 +61,17 @@ export class StatisticsSettingsUI extends FormApplication {
         const currentHiddenIds = StatisticsStorage.getHiddenUserIds();
         const staleHiddenIds = currentHiddenIds.filter((userId) => !game.users.has(userId));
         const trackingEnabled = this.element.find('[name="trackingEnabled"]').is(':checked');
+        const enableEconomy = this.element.find('[name="enableEconomy"]').is(':checked');
+        const enableAltar = this.element.find('[name="enableAltar"]').is(':checked');
         const hiddenUserIds = game.users.contents
             .filter((user) => Boolean(formData[`hiddenUsers.${user.id}`]))
             .map((user) => user.id);
 
         await StatisticsStorage.saveConfig({
             hiddenUserIds: [...staleHiddenIds, ...hiddenUserIds],
-            trackingEnabled
+            trackingEnabled,
+            enableEconomy,
+            enableAltar
         });
 
         ui.notifications.info('Настройки модуля сохранены.');
