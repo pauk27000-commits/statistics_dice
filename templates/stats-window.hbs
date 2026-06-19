@@ -105,9 +105,9 @@
                                 </section>
 
                                 <section class="detail-panel">
-                                    <div class="panel-header"><h4>Бенни</h4><span>{{#if (eq ../scope 'session')}}Сессия{{else}}Все время{{/if}}</span></div>
+                                    <div class="panel-header"><h4>Достижения и LP</h4><span>Интересные факты</span></div>
                                     <div class="benny-stat-grid">
-                                        {{#each this.bennyStats}}
+                                        {{#each this.highlightStats}}
                                         <div class="benny-stat-card">
                                             <span class="benny-stat-label"><i class="{{this.icon}}"></i> {{this.label}}</span>
                                             <strong class="benny-stat-value">{{this.value}}</strong>
@@ -204,12 +204,12 @@
 
             <div class="leaderboard-grid">
                 {{#each topBoards}}
+                {{#if this.hasEntries}}
                 <section class="detail-panel leaderboard-panel {{this.accentClass}}">
                     <div class="panel-header">
                         <h4><i class="{{this.icon}}"></i> {{this.title}}</h4>
                         <span>{{this.subtitle}}</span>
                     </div>
-                    {{#if this.hasEntries}}
                     <div class="leaderboard-highlight">
                         <div class="leaderboard-highlight-copy">
                             <span class="leaderboard-kicker">{{this.winnerLabel}}</span>
@@ -230,10 +230,8 @@
                         </article>
                         {{/each}}
                     </div>
-                    {{else}}
-                    <div class="leaderboard-empty">{{this.emptyText}}</div>
-                    {{/if}}
                 </section>
+                {{/if}}
                 {{/each}}
             </div>
         </div>
@@ -273,7 +271,7 @@
                     <section class="detail-panel">
                         <div class="panel-header"><h4><i class="fas fa-user-astronaut"></i> Аллея Славы</h4><span>Личные достижения игроков</span></div>
                         <div class="personal-records-grid" style="padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
-                            {{#each players}}
+                            {{#each allPlayers}}
                             {{#if this.recordList.length}}
                             <div class="personal-record-player" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px;">
                                 <strong style="display:block; margin-bottom:8px; color: var(--sd-text);">{{this.name}}</strong>

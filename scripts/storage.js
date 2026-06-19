@@ -457,6 +457,9 @@ export class StatisticsStorage {
         }
 
         playerData.luckPoints -= amount;
+        this._incrementBennyStats(playerData, (stats) => {
+            stats.lpSpent = (stats.lpSpent || 0) + amount;
+        });
         
         const meta = allStats[this.META_KEY] || {};
         meta.altarLP = (meta.altarLP || 0) + amount;

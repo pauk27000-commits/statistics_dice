@@ -252,15 +252,16 @@ export class StatisticsUI extends Application {
         };
     }
 
-    _prepareBennyData(playerData) {
-        const key = this.scope === 'session' ? 'session' : 'allTime';
-        const stats = playerData.bennyStats?.[key] || {};
+    _prepareHighlightStats(playerData, achievements) {
+        const stats = this.scope === 'session' ? playerData.session : playerData.allTime;
+        const benny = playerData.bennyStats?.allTime || {};
+        const totalEarned = (playerData.luckPoints || 0) + (benny.lpSpent || 0);
+
         return [
-            { label: 'Купил себе', value: stats.selfPurchased || 0, icon: 'fas fa-shopping-cart' },
-            { label: 'Подарил', value: stats.giftsSent || 0, icon: 'fas fa-gift' },
-            { label: 'Получил', value: stats.giftsReceived || 0, icon: 'fas fa-hand-holding-heart' },
-            { label: 'Выдано всего', value: stats.benniesGranted || 0, icon: 'fas fa-coins' },
-            { label: 'Потрачено LP', value: stats.lpSpent || 0, icon: 'fas fa-wallet' }
+            { label: 'Ачивок открыто', value: achievements.filter(a => a.isUnlocked).length, icon: 'fas fa-trophy' },
+            { label: 'LP Заработано', value: totalEarned, icon: 'fas fa-coins' },
+            { label: 'LP Потрачено', value: benny.lpSpent || 0, icon: 'fas fa-hand-holding-usd' },
+            { label: 'Критпровалов', value: stats.criticalFailures || 0, icon: 'fas fa-skull-crossbones' }
         ];
     }
 
@@ -391,6 +392,33 @@ export class StatisticsUI extends Application {
                 secondary: 'Накоплено удачи'
             }));
 
+        const unluckEntries = scoped
+            .filter((profile) => profile.scopeData.totalDiceRolled > 0 && profile.scopeData.overallLuckFactor < 0)
+            .map((profile) => ({
+                id: profile.id,
+                name: profile.name,
+                value: -profile.scopeData.overallLuckFactor,
+                scoreText: profile.scopeData.overallLuckText,
+                scoreClass: 'ranking-negative',
+                secondary: `${profile.scopeData.totalDiceRolled} кубов · среднее ${profile.scopeData.overallAverage}`
+            }));
+
+        const altar = StatisticsStorage.getAltarData();
+        const altarEntries = Object.entries(altar.contributors || {})
+            .map(([id, amount]) => {
+                const profile = profiles.find(p => p.id === id);
+                if (!profile) return null;
+                return {
+                    id: profile.id,
+                    name: profile.name,
+                    value: amount,
+                    scoreText: `${amount} LP`,
+                    scoreClass: 'ranking-positive',
+                    secondary: 'Пожертвовано Богам'
+                };
+            })
+            .filter(Boolean);
+
         return [
             this._buildBoard({
                 id: 'luck',
@@ -401,6 +429,15 @@ export class StatisticsUI extends Application {
                 accentClass: 'board-luck',
                 winnerLabel: 'Фаворит судьбы'
             }, luckEntries),
+            this._buildBoard({
+                id: 'unluck',
+                icon: 'fas fa-cloud-rain',
+                title: 'Худшая удача',
+                subtitle: `Те, кого кубы ненавидят за ${scopeLabel}.`,
+                emptyText: `Все бросают в пределах нормы или выше.`,
+                accentClass: 'board-failures',
+                winnerLabel: 'Жертва кубов'
+            }, unluckEntries),
             this._buildBoard({
                 id: 'explosions',
                 icon: 'fas fa-fire',
@@ -429,10 +466,19 @@ export class StatisticsUI extends Application {
                 winnerLabel: 'Коллекционер'
             }, achievementEntries),
             this._buildBoard({
+                id: 'altar',
+                icon: 'fas fa-fire-alt',
+                title: 'Главные меценаты',
+                subtitle: 'Те, кто пожертвовал больше всего LP Алтарю.',
+                emptyText: 'Алтарь пока пуст.',
+                accentClass: 'board-luck',
+                winnerLabel: 'Избранник Богов'
+            }, altarEntries),
+            this._buildBoard({
                 id: 'lp',
                 icon: 'fas fa-gem',
                 title: 'Магнаты LP',
-                subtitle: 'Самые богатые на очки удачи.',
+                subtitle: 'Самые богатые на очки удачи на текущий момент.',
                 emptyText: 'У всех по нулям.',
                 accentClass: 'board-lp',
                 winnerLabel: 'Адепт Фортуны'
@@ -656,7 +702,6 @@ export class StatisticsUI extends Application {
             const allTimeDisplayStats = this._prepareDisplayData(playerData, 'allTime');
             const sessionDisplayStats = this._prepareDisplayData(playerData, 'session');
             profiles.push({ id: userId, name: user.name, playerData, allTimeDisplayStats, sessionDisplayStats });
-            if (!isGM && userId !== currentUserId) continue;
 
             const achievements = Object.entries(ACHIEVEMENTS).map(([id, achievement]) => {
                 const record = playerData.achievements?.[id];
@@ -686,19 +731,24 @@ export class StatisticsUI extends Application {
                 luckPoints,
                 achievements,
                 displayStats,
-                bennyStats: this._prepareBennyData(playerData),
+                highlightStats: this._prepareHighlightStats(playerData, achievements),
                 recordList: this._prepareRecordList(playerData),
                 achievementSummary: this._achievementSummary(achievements),
                 economy: this._economy(luckPoints)
             });
         }
 
-        players.sort((a, b) => (a.isSelf !== b.isSelf ? (a.isSelf ? -1 : 1) : a.name.localeCompare(b.name, 'ru')));
-        return { players, profiles, isGM };
+        const allPlayers = [...players];
+        const visiblePlayers = isGM ? players : players.filter(p => p.id === currentUserId);
+
+        visiblePlayers.sort((a, b) => (a.isSelf !== b.isSelf ? (a.isSelf ? -1 : 1) : a.name.localeCompare(b.name, 'ru')));
+        allPlayers.sort((a, b) => (a.isSelf !== b.isSelf ? (a.isSelf ? -1 : 1) : a.name.localeCompare(b.name, 'ru')));
+        
+        return { players: visiblePlayers, allPlayers, profiles, isGM };
     }
 
     getData() {
-        const { players, profiles, isGM } = this._preparePlayersContext();
+        const { players, allPlayers, profiles, isGM } = this._preparePlayersContext();
         const recordFeed = this._prepareRecordFeed();
         
         const globalRecords = [
@@ -726,6 +776,7 @@ export class StatisticsUI extends Application {
 
         return {
             players,
+            allPlayers,
             isGM,
             currentUserLP,
             scope: this.scope,

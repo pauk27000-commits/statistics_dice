@@ -1571,6 +1571,8 @@
     color: var(--sd-text);
     font-size: 0.6rem;
     font-weight: 700;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .statistics-dice-app .ach-unlocked .ach-icon {
