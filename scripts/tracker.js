@@ -257,6 +257,26 @@ export class DiceTracker {
             if (total >= tn) {
                 raises = Math.floor((total - tn) / 4);
             }
+        } else if (brswFlags && isDamage) {
+            const damageRolls = brData?.damage?.damage_rolls || brData?.damage_rolls || brswFlags?.render_data?.damage_rolls || [];
+            let maxDmgTotal = -9999;
+            for (const dmg of damageRolls) {
+                const possibleTotals = [
+                    dmg.total,
+                    dmg.brswroll?.total,
+                    dmg.final_total,
+                    dmg.damage_total,
+                    dmg.result
+                ].map(t => Number(t)).filter(t => !isNaN(t));
+
+                if (possibleTotals.length > 0) {
+                    const dmgTotal = Math.max(...possibleTotals);
+                    if (dmgTotal > maxDmgTotal) {
+                        maxDmgTotal = dmgTotal;
+                    }
+                }
+            }
+            if (maxDmgTotal !== -9999) total = maxDmgTotal;
         } else if (!isDamage && message.rolls?.length > 0) {
             const extractActiveTotals = (rollObj) => {
                 let activeTotals = [];
@@ -317,6 +337,15 @@ export class DiceTracker {
                 }
             }
             if (maxTotal !== -9999) total = maxTotal;
+        } else if (isDamage && message.rolls?.length > 0) {
+            let maxDmgTotal = -9999;
+            for (const r of message.rolls) {
+                const rTotal = Number(r.total);
+                if (!isNaN(rTotal) && rTotal > maxDmgTotal) {
+                    maxDmgTotal = rTotal;
+                }
+            }
+            if (maxDmgTotal !== -9999) total = maxDmgTotal;
         }
 
         if (diceDataForStorage.length > 0) {
@@ -338,6 +367,7 @@ export class DiceTracker {
             await AchievementManager.check({
                 userId,
                 roll,
+                totalResult: total,
                 isCritFail,
                 dieTermSummaries: dieTermSummariesForAchievements,
                 tn,

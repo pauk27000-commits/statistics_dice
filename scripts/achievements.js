@@ -6,7 +6,7 @@ export const ACHIEVEMENTS = {
     SNAKE_BIT: { name: "Змеиный укус", description: "Выбросить 'Змеиные глаза'.", lp: 15, rarity: 'common', maxRank: 0 },
     PREMATURE_DETONATION: { name: "Фальстарт", description: "Кубик взорвался, но следующий бросок — '1'.", lp: 5, rarity: 'common', maxRank: 0 },
     SAVED_BY_THE_WILD: { name: "Спасенный Диким", description: "Кубик навыка '1', но Дикий кубик дал Успех.", lp: 5, rarity: 'common', maxRank: 0 },
-    AGAINST_ALL_ODDS: { name: "Вопреки всему", description: "Пройти проверку со штрафом -4 или больше.", lp: 25, rarity: 'rare', maxRank: 0 },
+    AGAINST_ALL_ODDS: { name: "Вопреки всему", description: "Пройти проверку со штрафом -4 или больше.", lp: 40, rarity: 'epic', maxRank: 0 },
 
     // --- Дубли (Бинго) ---
     DOUBLE_2: { name: "Гуси-лебеди", description: "Выбросить 2-2.", lp: 5, rarity: 'common', maxRank: 0 },
@@ -16,31 +16,35 @@ export const ACHIEVEMENTS = {
 
     // --- Героические моменты ---
     CHAIN_REACTION: { name: "Цепная реакция", description: "Один кубик взорвался 2 раза подряд.", lp: 15, rarity: 'rare', maxRank: 0 },
-    GRINDER: { name: "Марафонец", description: "Совершить 50 бросков за сессию.", lp: 15, rarity: 'rare', maxRank: 1 },
+    GRINDER: { name: "Марафонец", description: "Совершить 50 бросков за сессию.", lp: 20, rarity: 'rare', maxRank: 1 },
     DEAD_EYE: { name: "Снайпер", description: "Получить 2 Подъема (≥ TN + 8).", lp: 20, rarity: 'rare', maxRank: 0 },
-    MINIMALIST: { name: "Минималист", description: "Пройти проверку ровно по сложности.", lp: 10, rarity: 'rare', maxRank: 0 },
+    MINIMALIST: { name: "Минималист", description: "Пройти проверку ровно по сложности.", lp: 10, rarity: 'common', maxRank: 0 },
     RAW_POWER: { name: "Чистая Сила", description: "Получить Подъем без взрывов кубиков.", lp: 15, rarity: 'rare', maxRank: 0 },
-    SYNCHRONICITY: { name: "Синхронность", description: "На 3+ кубиках выпало одно и то же значение.", lp: 20, rarity: 'rare', maxRank: 0 },
+    SYNCHRONICITY: { name: "Синхронность", description: "На 3+ кубиках выпало одно и то же значение.", lp: 50, rarity: 'epic', maxRank: 0 },
     THE_SPECIALIST: { name: "Специалист", description: "Успешно использовать один навык 8 раз за сессию.", lp: 30, rarity: 'epic', maxRank: 1 },
     ON_A_ROLL: { name: "На волне удачи", description: "Получить Подъем на 5 бросках подряд.", lp: 25, rarity: 'epic', maxRank: 0 },
 
     // --- Идеальный шторм (Градации) ---
-    PERFECT_STORM_D4: { name: "Идеальный шторм (d4)", lp: 30, rarity: 'rare', maxRank: 0 },
-    PERFECT_STORM_D6: { name: "Идеальный шторм (d6)", lp: 50, rarity: 'epic', maxRank: 0 },
-    PERFECT_STORM_D8: { name: "Идеальный шторм (d8)", lp: 70, rarity: 'epic', maxRank: 0 },
-    PERFECT_STORM_D10: { name: "Идеальный шторм (d10)", lp: 90, rarity: 'legendary', maxRank: 0 },
-    PERFECT_STORM_D12: { name: "Идеальный шторм (d12)", lp: 120, rarity: 'legendary', maxRank: 0 },
+    PERFECT_STORM_D4: { name: "Идеальный шторм (d4)", description: "И основной, и Дикий куб (d4) взорвались одновременно.", lp: 30, rarity: 'rare', maxRank: 0 },
+    PERFECT_STORM_D6: { name: "Идеальный шторм (d6)", description: "И основной, и Дикий куб (d6) взорвались одновременно.", lp: 50, rarity: 'epic', maxRank: 0 },
+    PERFECT_STORM_D8: { name: "Идеальный шторм (d8)", description: "И основной, и Дикий куб (d8) взорвались одновременно.", lp: 70, rarity: 'epic', maxRank: 0 },
+    PERFECT_STORM_D10: { name: "Идеальный шторм (d10)", description: "И основной, и Дикий куб (d10) взорвались одновременно.", lp: 90, rarity: 'legendary', maxRank: 0 },
+    PERFECT_STORM_D12: { name: "Идеальный шторм (d12)", description: "И основной, и Дикий куб (d12) взорвались одновременно.", lp: 120, rarity: 'legendary', maxRank: 0 },
 
     // --- Эпические достижения ---
     CURSED: { name: "Проклятый", description: "2 крит. провала за сессию.", lp: 50, rarity: 'epic', maxRank: 1 },
-    OVERKILL: { name: "Оверкилл", description: "Нанести 30+ урона одним ударом.", lp: 50, rarity: 'epic', maxRank: 0 },
     NICE: { name: "Ну вы поняли", description: "6 на Диком, 9 на основном.", lp: 50, rarity: 'epic', maxRank: 0 },
     JACK_OF_ALL_TRADES: { name: "Мастер на все руки", description: "5 успешных разных навыков за сессию.", lp: 40, rarity: 'epic', maxRank: 1 },
 
     // --- Легендарные ---
     TO_THE_MOON: { name: "Илон Маск", description: "Один кубик взорвался 4 раза подряд.", lp: 100, rarity: 'legendary', maxRank: 0 },
-    ABSOLUTE_ZERO: { name: "Абсолютный ноль", description: "Итог броска ≤ 0.", lp: 20, rarity: 'legendary', maxRank: 0 },
+    ABSOLUTE_ZERO: { name: "Абсолютный ноль", description: "Итог броска ≤ 0.", lp: 20, rarity: 'rare', maxRank: 0 },
     DIVINE_INTERVENTION: { name: "Божественное вмешательство", description: "Итог броска ≥ 40.", lp: 100, rarity: 'legendary', maxRank: 0 },
+
+    // --- Новые ачивки ---
+    BEGINNERS_LUCK: { name: "Удача новичка", description: "Успех на проверке навыка, которого у персонажа нет (Неумелая попытка).", lp: 25, rarity: 'rare', maxRank: 0 },
+    EXTREME_VARIANCE: { name: "Максимальный разброс", description: "На основном кубике 1, а дикий взорвался (или наоборот).", lp: 20, rarity: 'rare', maxRank: 0 },
+    DEVILS_LUCK: { name: "Число Зверя", description: "Итоговый результат ровно 13 (или три шестерки на кубах).", lp: 40, rarity: 'epic', maxRank: 0 },
 };
 
 export class AchievementManager {
@@ -75,8 +79,9 @@ export class AchievementManager {
     static async check(rollData) {
         if (!StatisticsStorage.isTrackingEnabled()) return false;
 
-        const { userId, roll, isCritFail, dieTermSummaries, tn, flavor, penalty, isDamage } = rollData;
+        const { userId, roll, totalResult, isCritFail, dieTermSummaries, tn, flavor, penalty, isDamage } = rollData;
         const playerData = StatisticsStorage.getPlayerData(userId);
+        const rollTotal = totalResult ?? roll?.total ?? 0;
         let dataChanged = false;
 
         // --- Update Session Stats ---
@@ -89,11 +94,14 @@ export class AchievementManager {
             if (await this.unlock(userId, 'SNAKE_BIT', playerData)) dataChanged = true;
         }
 
-        if (roll.total <= 0) {
+        if (rollTotal <= 0) {
             if (await this.unlock(userId, 'ABSOLUTE_ZERO', playerData)) dataChanged = true;
         }
-        if (roll.total >= 40) {
+        if (rollTotal >= 40) {
             if (await this.unlock(userId, 'DIVINE_INTERVENTION', playerData)) dataChanged = true;
+        }
+        if (rollTotal === 13) {
+            if (await this.unlock(userId, 'DEVILS_LUCK', playerData)) dataChanged = true;
         }
 
         if (playerData.session.actions >= 50) {
@@ -104,10 +112,19 @@ export class AchievementManager {
         }
 
         if (dieTermSummaries) {
+            let sixesCount = 0;
             for (const term of dieTermSummaries) {
+                if (term.allResults) {
+                    for (const r of term.allResults) {
+                        if (r.result === 6) sixesCount++;
+                    }
+                }
                 if (term.aces >= 2) { if (await this.unlock(userId, 'CHAIN_REACTION', playerData)) dataChanged = true; }
                 if (term.aces >= 4) { if (await this.unlock(userId, 'TO_THE_MOON', playerData)) dataChanged = true; }
                 if (term.aces > 0 && term.finalResult === 1) { if (await this.unlock(userId, 'PREMATURE_DETONATION', playerData)) dataChanged = true; }
+            }
+            if (sixesCount >= 3) {
+                if (await this.unlock(userId, 'DEVILS_LUCK', playerData)) dataChanged = true;
             }
             if (dieTermSummaries.length >= 3) {
                 const firstResult = dieTermSummaries[0].allResults[0]?.result;
@@ -139,16 +156,22 @@ export class AchievementManager {
                 if (traitResult === 5 && wildResult === 5) { if (await this.unlock(userId, 'DOUBLE_5', playerData)) dataChanged = true; }
                 if ((traitResult === 6 && wildResult === 9) || (traitResult === 9 && wildResult === 6)) { if (await this.unlock(userId, 'NICE', playerData)) dataChanged = true; }
                 if (traitResult === 1 && wildResult >= tn) { if (await this.unlock(userId, 'SAVED_BY_THE_WILD', playerData)) dataChanged = true; }
+                if ((traitResult === 1 && wildDie.aces > 0) || (wildResult === 1 && traitDie.aces > 0)) { if (await this.unlock(userId, 'EXTREME_VARIANCE', playerData)) dataChanged = true; }
             }
         }
 
-        if (roll.total >= tn) { // Success
+        if (!isDamage && rollTotal >= tn) { // Success
             if (penalty >= 4) { if (await this.unlock(userId, 'AGAINST_ALL_ODDS', playerData)) dataChanged = true; }
-            if (roll.total >= tn + 8) { if (await this.unlock(userId, 'DEAD_EYE', playerData)) dataChanged = true; }
-            if (roll.total === tn) { if (await this.unlock(userId, 'MINIMALIST', playerData)) dataChanged = true; }
+            if (rollTotal >= tn + 8) { if (await this.unlock(userId, 'DEAD_EYE', playerData)) dataChanged = true; }
+            if (rollTotal === tn) { if (await this.unlock(userId, 'MINIMALIST', playerData)) dataChanged = true; }
+
+            const isUnskilled = flavor && (flavor.toLowerCase().includes('unskilled') || flavor.toLowerCase().includes('неумел'));
+            if (isUnskilled) {
+                if (await this.unlock(userId, 'BEGINNERS_LUCK', playerData)) dataChanged = true;
+            }
 
             const totalAces = dieTermSummaries.reduce((acc, term) => acc + term.aces, 0);
-            if (roll.total >= tn + 4 && totalAces === 0) {
+            if (rollTotal >= tn + 4 && totalAces === 0) {
                 if (await this.unlock(userId, 'RAW_POWER', playerData)) dataChanged = true;
             }
 
@@ -172,7 +195,7 @@ export class AchievementManager {
             }
 
             // Check for Raise Streak
-            if (roll.total >= tn + 4) { // At least one raise
+            if (rollTotal >= tn + 4) { // At least one raise
                 playerData.session.raiseStreak = (playerData.session.raiseStreak || 0) + 1;
                 if (playerData.session.raiseStreak >= 5) {
                     if (await this.unlock(userId, 'ON_A_ROLL', playerData)) dataChanged = true;
@@ -181,13 +204,9 @@ export class AchievementManager {
                 playerData.session.raiseStreak = 0;
             }
 
-        } else { // Failure
+        } else if (!isDamage) { // Failure
             playerData.session.raiseStreak = 0;
             playerData.session.skillStreak = { skill: null, count: 0 };
-        }
-
-        if (roll.total >= 30) {
-            if (await this.unlock(userId, 'OVERKILL', playerData)) dataChanged = true;
         }
 
         if (dataChanged) {
@@ -206,33 +225,50 @@ export class AchievementManager {
             return false;
         }
 
+        let isNew = false;
         if (playerAchievement) {
             playerAchievement.count++;
         } else {
             playerData.achievements[achievementId] = { unlocked: Date.now(), count: 1 };
+            isNew = true;
         }
 
         playerData.luckPoints = (playerData.luckPoints || 0) + achievement.lp;
 
         const user = game.users.get(userId);
 
-        const msg = await ChatMessage.create({
-            speaker: { alias: "Система Ачивок" },
-            content: `
-                <div style="border: 2px solid #ffd700; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px; color: white;">
-                    <h3 style="color: #ffd700; border-bottom: 1px solid #555; margin-bottom: 5px;">🏆 Ачивка Разблокирована!</h3>
-                    <div style="font-size: 1.1em; font-weight: bold;">${achievement.name}</div>
-                    <div style="font-style: italic; font-size: 0.9em; color: #ccc;">${achievement.description || ''}</div>
-                    <div style="margin-top: 5px; color: #4caf50; font-weight: bold;">Награда: +${achievement.lp} LP</div>
-                    <div style="font-size: 0.8em; color: #888; margin-top: 5px;">Игрок: ${user.name}</div>
-                </div>
-            `
-        });
-
-        // Auto-delete after 10 seconds
-        setTimeout(() => {
-            if (msg) msg.delete().catch(err => console.log("Statistics Dice | Message already deleted"));
-        }, 10000);
+        if (isNew) {
+            const msg = await ChatMessage.create({
+                speaker: { alias: "Система Ачивок" },
+                sound: "sounds/notify.wav",
+                content: `
+                    <div style="border: 2px solid #ffd700; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 5px; color: white;">
+                        <h3 style="color: #ffd700; border-bottom: 1px solid #555; margin-bottom: 5px;">🏆 Новая Ачивка!</h3>
+                        <div style="font-size: 1.1em; font-weight: bold;">${achievement.name}</div>
+                        <div style="font-style: italic; font-size: 0.9em; color: #ccc;">${achievement.description || ''}</div>
+                        <div style="margin-top: 5px; color: #4caf50; font-weight: bold;">Награда: +${achievement.lp} LP</div>
+                        <div style="font-size: 0.8em; color: #888; margin-top: 5px;">Игрок: ${user.name} открыл это достижение впервые!</div>
+                    </div>
+                `
+            });
+            setTimeout(() => {
+                if (msg) msg.delete().catch(err => console.log("Statistics Dice | Message already deleted"));
+            }, 15000);
+        } else {
+            const count = playerData.achievements[achievementId].count;
+            const msg = await ChatMessage.create({
+                speaker: { alias: "Система Ачивок" },
+                content: `
+                    <div style="background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 3px; border-left: 3px solid #ffd700; color: #ddd; font-size: 0.9em;">
+                        <strong>${user.name}</strong> снова получает <strong>${achievement.name}</strong> (x${count})!<br>
+                        <span style="color: #4caf50;">+${achievement.lp} LP</span>
+                    </div>
+                `
+            });
+            setTimeout(() => {
+                if (msg) msg.delete().catch(err => console.log("Statistics Dice | Message already deleted"));
+            }, 8000);
+        }
 
         return true;
     }
