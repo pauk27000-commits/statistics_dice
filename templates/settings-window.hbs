@@ -21,6 +21,37 @@
             <input type="checkbox" name="enableEconomy" {{#if enableEconomy}}checked{{/if}}>
         </label>
 
+        {{#if enableEconomy}}
+        <div class="store-customization" style="margin-top: 10px; margin-bottom: 20px; padding: 12px; background: rgba(0,0,0,0.15); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+            <h5 style="margin: 0 0 12px 0; color: #7ddf9c; font-size: 0.9rem;"><i class="fas fa-store"></i> Цены в магазине</h5>
+
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; margin-bottom: 10px;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Цена покупки фишки себе</strong></span>
+                <input type="number" name="costBenny" value="{{costBenny}}" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 4px 8px; border-radius: 4px;">
+            </label>
+
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start; margin-bottom: 10px;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Цена подарка фишки</strong></span>
+                <input type="number" name="costGift" value="{{costGift}}" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 4px 8px; border-radius: 4px;">
+            </label>
+
+            <label class="settings-user-row settings-toggle-row" style="margin-top: 10px; margin-bottom: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <span class="settings-user-copy">
+                    <strong style="color: #a881e6;">Включить "Воспоминание"</strong>
+                    <small>Игроки смогут за LP инициировать художественный флешбек (как в Blades in the Dark).</small>
+                </span>
+                <input type="checkbox" name="enableFlashback" {{#if enableFlashback}}checked{{/if}}>
+            </label>
+
+            {{#if enableFlashback}}
+            <label class="settings-user-row" style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+                <span class="settings-user-copy" style="flex: none; width: 100%;"><strong>Цена "Воспоминания"</strong></span>
+                <input type="number" name="costFlashback" value="{{costFlashback}}" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #f4ebd6; padding: 4px 8px; border-radius: 4px;">
+            </label>
+            {{/if}}
+        </div>
+        {{/if}}
+
         <label class="settings-user-row settings-toggle-row">
             <span class="settings-user-copy">
                 <strong>Алтарь Удачи</strong>

@@ -52,6 +52,10 @@ export class StatisticsStorage {
             hiddenUserIds: [],
             trackingEnabled: true,
             enableEconomy: true,
+            costBenny: 100,
+            costGift: 200,
+            enableFlashback: true,
+            costFlashback: 500,
             enableAltar: true,
             altarTitle: 'Алтарь Удачи',
             altarDescription: 'Жертвуйте очки удачи, чтобы снискать их милость. Возможно, когда чаша наполнится, произойдет чудо...',
@@ -500,13 +504,15 @@ export class StatisticsStorage {
     }
 
     static async buyBennyForPlayer(userId) {
+        const config = this.getConfig();
+        const cost = config.costBenny || 100;
         const allStats = this.getStats();
         const playerData = this.getPlayerData(userId);
         const user = game.users.get(userId);
 
         if (!user) return;
 
-        if ((playerData.luckPoints || 0) < 100) {
+        if ((playerData.luckPoints || 0) < cost) {
             if (game.user.isGM) {
                 ui.notifications.warn(`У игрока ${user.name} недостаточно LP для покупки фишки!`);
             }
@@ -519,8 +525,8 @@ export class StatisticsStorage {
             return;
         }
 
-        playerData.luckPoints -= 100;
-        this._trackSelfPurchase(playerData, 100);
+        playerData.luckPoints -= cost;
+        this._trackSelfPurchase(playerData, cost);
 
         const currentBennies = actor.system.bennies.value;
         await actor.update({ 'system.bennies.value': currentBennies + 1 });
@@ -529,7 +535,7 @@ export class StatisticsStorage {
             content: `
                 <div style="text-align:center; font-weight:bold; border: 2px solid #ff9800; padding: 5px;">
                     <h3>Покупка в магазине</h3>
-                    <p>Игрок <strong>${user.name}</strong> потратил 100 LP на покупку фишки.</p>
+                    <p>Игрок <strong>${user.name}</strong> потратил ${cost} LP на покупку фишки.</p>
                     <p style="color: #4caf50; font-weight: bold;">Фишка выдана автоматически.</p>
                 </div>`
         });
@@ -539,6 +545,8 @@ export class StatisticsStorage {
     }
 
     static async buyBennyGift(buyerId, targetId) {
+        const config = this.getConfig();
+        const cost = config.costGift || 200;
         const allStats = this.getStats();
         const buyerData = this.getPlayerData(buyerId);
         const targetData = this.getPlayerData(targetId);
@@ -547,7 +555,7 @@ export class StatisticsStorage {
 
         if (!buyer || !target) return;
 
-        if ((buyerData.luckPoints || 0) < 200) {
+        if ((buyerData.luckPoints || 0) < cost) {
             if (game.user.isGM) {
                 ui.notifications.warn(`У игрока ${buyer.name} недостаточно LP для подарка!`);
             }
@@ -560,8 +568,8 @@ export class StatisticsStorage {
             return;
         }
 
-        buyerData.luckPoints -= 200;
-        this._trackGiftSender(buyerData, 200);
+        buyerData.luckPoints -= cost;
+        this._trackGiftSender(buyerData, cost);
         this._trackGiftReceiver(targetData);
 
         const currentBennies = targetActor.system.bennies.value;
@@ -571,13 +579,65 @@ export class StatisticsStorage {
             content: `
                 <div style="text-align:center; font-weight:bold; border: 2px solid #e91e63; padding: 5px;">
                     <h3>Подарок</h3>
-                    <p>Игрок <strong>${buyer.name}</strong> потратил 200 LP, чтобы подарить фишку игроку <strong>${target.name}</strong>.</p>
+                    <p>Игрок <strong>${buyer.name}</strong> потратил ${cost} LP, чтобы подарить фишку игроку <strong>${target.name}</strong>.</p>
                     <p style="color: #4caf50; font-weight: bold;">Фишка выдана автоматически.</p>
                 </div>`
         });
 
         allStats[buyerId] = buyerData;
         allStats[targetId] = targetData;
+        await this.saveAllStats(allStats);
+    }
+
+    static async buyFlashbackForPlayer(userId) {
+        const config = this.getConfig();
+        const cost = config.costFlashback || 500;
+        const allStats = this.getStats();
+        const playerData = this.getPlayerData(userId);
+        const user = game.users.get(userId);
+
+        if (!user) return;
+
+        if ((playerData.luckPoints || 0) < cost) {
+            if (game.user.isGM) {
+                ui.notifications.warn(`У игрока ${user.name} недостаточно LP для Воспоминания!`);
+            }
+            return;
+        }
+
+        playerData.luckPoints -= cost;
+        this._trackSelfPurchase(playerData, cost);
+
+        const charName = user.character?.name || user.name;
+        
+        ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ user: user }),
+            content: `
+                <div class="statistics-dice-app">
+                    <div class="record-feed-item record-level-legendary flashback-card" style="margin: 0; padding: 16px; background: linear-gradient(135deg, rgba(168, 129, 230, 0.25), rgba(125, 75, 194, 0.4)); border: 1px solid rgba(168, 129, 230, 0.6); box-shadow: 0 0 25px rgba(168, 129, 230, 0.3);">
+                        <div class="record-feed-icon" style="background: rgba(168, 129, 230, 0.3); box-shadow: 0 0 15px rgba(168, 129, 230, 0.6);">
+                            <i class="fas fa-history" style="color: #e9d5ff; font-size: 1.5rem;"></i>
+                        </div>
+                        <div class="record-feed-content">
+                            <div class="record-feed-title" style="margin-bottom: 8px;">
+                                <strong style="color: #e9d5ff; font-size: 1.3rem; text-shadow: 0 0 12px rgba(233, 213, 255, 0.8);">✨ А помнишь...</strong>
+                            </div>
+                            <div class="record-feed-meta">
+                                <span style="color: #f3f4f6; font-size: 1.05rem; line-height: 1.5; text-shadow: 1px 1px 3px rgba(0,0,0,0.9);">
+                                    <strong style="color: #ffffff; font-weight: 800;">${charName}</strong> предается воспоминаниям, открывая новые грани текущей сцены. <br><br><span style="color: #d8b4fe; font-style: italic;">Мастер, что было дальше?</span>
+                                </span>
+                            </div>
+                            <div class="flashback-actions" style="margin-top: 14px; text-align: right;">
+                                <button class="refund-flashback" data-userid="${userId}" data-cost="${cost}" style="background: rgba(255, 100, 100, 0.15); border: 1px solid rgba(255, 100, 100, 0.4); color: #ffb3b3; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: 0.2s;">
+                                    <i class="fas fa-undo"></i> Откатить воспоминание
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+        });
+
+        allStats[userId] = playerData;
         await this.saveAllStats(allStats);
     }
 
@@ -800,6 +860,23 @@ export class StatisticsStorage {
 
         normalized[this.META_KEY] = foundry.utils.mergeObject(this.getDefaultMeta(), normalized[this.META_KEY] || {});
         return normalized;
+    }
+
+    static async refundLP(userId, amount) {
+        const allStats = this.getStats();
+        const playerData = this.getPlayerData(userId);
+        
+        playerData.luckPoints = (playerData.luckPoints || 0) + amount;
+        
+        if (playerData.allTime && playerData.allTime.lpSpent) {
+            playerData.allTime.lpSpent = Math.max(0, playerData.allTime.lpSpent - amount);
+        }
+        if (playerData.session && playerData.session.lpSpent) {
+            playerData.session.lpSpent = Math.max(0, playerData.session.lpSpent - amount);
+        }
+
+        allStats[userId] = playerData;
+        await this.saveAllStats(allStats);
     }
 
     static getExportPayload() {

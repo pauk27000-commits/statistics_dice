@@ -445,6 +445,7 @@
 .statistics-dice-app .gm-buttons button,
 .statistics-dice-app .buy-benny,
 .statistics-dice-app .gift-benny,
+.statistics-dice-app .buy-flashback,
 .statistics-dice-app .show-session-summary {
     min-width: 0;
     padding: 0 10px;
@@ -468,6 +469,7 @@
 .statistics-dice-app .gm-buttons button:hover,
 .statistics-dice-app .buy-benny:hover:not(:disabled),
 .statistics-dice-app .gift-benny:hover:not(:disabled),
+.statistics-dice-app .buy-flashback:hover:not(:disabled),
 .statistics-dice-app .show-session-summary:hover:not(:disabled) {
     transform: translateY(-1px);
     border-color: var(--sd-border-strong);
@@ -483,12 +485,17 @@
     background: rgba(240, 179, 106, 0.18);
 }
 
+.statistics-dice-app .buy-flashback {
+    background: rgba(168, 129, 230, 0.18);
+}
+
 .statistics-dice-app .show-session-summary {
     background: linear-gradient(135deg, rgba(241, 201, 120, 0.26), rgba(121, 231, 255, 0.16));
 }
 
 .statistics-dice-app .buy-benny:disabled,
 .statistics-dice-app .gift-benny:disabled,
+.statistics-dice-app .buy-flashback:disabled,
 .statistics-dice-app .show-session-summary:disabled {
     opacity: 0.45;
     cursor: not-allowed;

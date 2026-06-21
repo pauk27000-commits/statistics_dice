@@ -43,6 +43,10 @@ export class StatisticsSettingsUI extends FormApplication {
             exportText: StatisticsStorage.exportStatsToString(),
             trackingEnabled: config.trackingEnabled !== false,
             enableEconomy: config.enableEconomy !== false,
+            costBenny: config.costBenny ?? 100,
+            costGift: config.costGift ?? 200,
+            enableFlashback: config.enableFlashback !== false,
+            costFlashback: config.costFlashback ?? 500,
             enableAltar: config.enableAltar !== false,
             altarTitle: config.altarTitle || 'Алтарь Удачи',
             altarDescription: config.altarDescription || '',
@@ -69,10 +73,15 @@ export class StatisticsSettingsUI extends FormApplication {
         const trackingEnabled = this.element.find('[name="trackingEnabled"]').is(':checked');
         const enableEconomy = this.element.find('[name="enableEconomy"]').is(':checked');
         const enableAltar = this.element.find('[name="enableAltar"]').is(':checked');
+        const enableFlashback = this.element.find('[name="enableFlashback"]').is(':checked');
         const hiddenUserIds = game.users.contents
             .filter((user) => Boolean(formData[`hiddenUsers.${user.id}`]))
             .map((user) => user.id);
         
+        const costBenny = parseInt(this.element.find('[name="costBenny"]').val(), 10) || 100;
+        const costGift = parseInt(this.element.find('[name="costGift"]').val(), 10) || 200;
+        const costFlashback = parseInt(this.element.find('[name="costFlashback"]').val(), 10) || 500;
+
         const altarTitle = this.element.find('[name="altarTitle"]').val()?.trim() || '';
         const altarGoal = parseInt(this.element.find('[name="altarGoal"]').val(), 10) || 1000;
         const altarImage = this.element.find('[name="altarImage"]').val()?.trim() || '';
@@ -83,6 +92,10 @@ export class StatisticsSettingsUI extends FormApplication {
             hiddenUserIds: [...staleHiddenIds, ...hiddenUserIds],
             trackingEnabled,
             enableEconomy,
+            costBenny,
+            costGift,
+            enableFlashback,
+            costFlashback,
             enableAltar,
             altarTitle,
             altarGoal,

@@ -66,7 +66,7 @@ Hooks.once('ready', () => {
         if (!game.user.isGM) return; // Only GM processes these
 
         const flags = message.flags?.statistics_dice || {};
-        const { buyRequest, userId, giftRequest, buyerId, targetId, altarDonateRequest, amount } = flags;
+        const { buyRequest, userId, giftRequest, buyerId, targetId, altarDonateRequest, amount, flashbackRequest } = flags;
 
         if (buyRequest && userId) {
             console.log(`Statistics Dice | GM received buy request from ${userId}`);
@@ -83,6 +83,12 @@ Hooks.once('ready', () => {
         if (altarDonateRequest && userId && amount) {
             console.log(`Statistics Dice | GM received altar donate request from ${userId} for ${amount}`);
             await StatisticsStorage.donateAltarLP(userId, amount);
+            await message.delete();
+        }
+
+        if (flashbackRequest && userId) {
+            console.log(`Statistics Dice | GM received flashback request from ${userId}`);
+            await StatisticsStorage.buyFlashbackForPlayer(userId);
             await message.delete();
         }
     });
@@ -104,6 +110,27 @@ Hooks.once('ready', () => {
                         });
                     },
                     button: true
+                });
+            }
+        }
+    });
+
+    Hooks.on('renderChatMessage', (app, html, data) => {
+        const btn = html.find('.refund-flashback');
+        if (btn.length > 0) {
+            if (!game.user.isGM) {
+                btn.hide();
+            } else {
+                btn.click(async (e) => {
+                    e.preventDefault();
+                    const userId = e.currentTarget.dataset.userid;
+                    const cost = parseInt(e.currentTarget.dataset.cost, 10);
+                    
+                    if (userId && cost) {
+                        await StatisticsStorage.refundLP(userId, cost);
+                        await app.delete();
+                        ui.notifications.info(`Воспоминание отменено. ${cost} LP возвращено.`);
+                    }
                 });
             }
         }

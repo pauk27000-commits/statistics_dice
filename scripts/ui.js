@@ -306,12 +306,17 @@ export class StatisticsUI extends Application {
         return { total, unlocked, legendary, completion: total ? Math.round((unlocked / total) * 100) : 0 };
     }
 
-    _economy(luckPoints = 0) {
+    _economy(luckPoints = 0, config = {}) {
+        const cB = config.costBenny || 100;
+        const cG = config.costGift || 200;
+        const cF = config.costFlashback || 500;
         return {
-            buyProgress: Math.min(luckPoints, 100),
-            giftProgress: Math.min((luckPoints / 200) * 100, 100),
-            nextBuyText: luckPoints >= 100 ? 'Готово' : `${100 - luckPoints} LP`,
-            nextGiftText: luckPoints >= 200 ? 'Готово' : `${200 - luckPoints} LP`
+            buyProgress: Math.min((luckPoints / cB) * 100, 100),
+            giftProgress: Math.min((luckPoints / cG) * 100, 100),
+            flashbackProgress: Math.min((luckPoints / cF) * 100, 100),
+            nextBuyText: luckPoints >= cB ? 'Готово' : `${cB - luckPoints} LP`,
+            nextGiftText: luckPoints >= cG ? 'Готово' : `${cG - luckPoints} LP`,
+            nextFlashbackText: luckPoints >= cF ? 'Готово' : `${cF - luckPoints} LP`
         };
     }
 
@@ -684,6 +689,7 @@ export class StatisticsUI extends Application {
     }
 
     _preparePlayersContext() {
+        const config = StatisticsStorage.getConfig();
         const allStats = StatisticsStorage.getStats();
         const hiddenUserIds = new Set(StatisticsStorage.getHiddenUserIds());
         const currentUserId = game.user.id;
@@ -734,7 +740,7 @@ export class StatisticsUI extends Application {
                 highlightStats: this._prepareHighlightStats(playerData, achievements),
                 recordList: this._prepareRecordList(playerData),
                 achievementSummary: this._achievementSummary(achievements),
-                economy: this._economy(luckPoints)
+                economy: this._economy(luckPoints, config)
             });
         }
 
@@ -775,6 +781,7 @@ export class StatisticsUI extends Application {
         const currentUserLP = currentUserData.luckPoints || 0;
 
         return {
+            config,
             players,
             allPlayers,
             isGM,
@@ -783,6 +790,7 @@ export class StatisticsUI extends Application {
             trackingEnabled: StatisticsStorage.isTrackingEnabled(),
             enableEconomy,
             enableAltar,
+            enableFlashback: config.enableFlashback !== false,
             altar,
             recordFeed,
             globalRecords,
@@ -819,6 +827,7 @@ export class StatisticsUI extends Application {
         html.find('.share-skills').click(this._onShareSkills.bind(this));
         html.find('.buy-benny').click(this._onBuyBenny.bind(this));
         html.find('.gift-benny').click(this._onGiftBenny.bind(this));
+        html.find('.buy-flashback').click(this._onBuyFlashback.bind(this));
         html.find('.reset-session').click(this._onResetSession.bind(this));
         html.find('.altar-donate').click(this._onAltarDonate.bind(this));
         html.find('.altar-reset').click(this._onAltarReset.bind(this));
@@ -860,8 +869,10 @@ export class StatisticsUI extends Application {
         if (game.user.isGM) return StatisticsStorage.buyBennyForPlayer(userId);
         if (userId !== game.user.id) return;
 
+        const config = StatisticsStorage.getConfig();
+        const cost = config.costBenny || 100;
         const playerData = StatisticsStorage.getPlayerData(userId);
-        if ((playerData.luckPoints || 0) < 100) return ui.notifications.warn('Недостаточно LP для покупки фишки.');
+        if ((playerData.luckPoints || 0) < cost) return ui.notifications.warn('Недостаточно LP для покупки фишки.');
         if (!game.users.activeGM) return ui.notifications.error('Покупка невозможна: мастер не в сети.');
 
         ui.notifications.info('Отправлен запрос на покупку фишки.');
@@ -875,7 +886,9 @@ export class StatisticsUI extends Application {
     async _onGiftBenny(event) {
         const buyerId = event.currentTarget.dataset.userid;
         const buyerData = StatisticsStorage.getPlayerData(buyerId);
-        if ((buyerData.luckPoints || 0) < 200) return ui.notifications.warn('Недостаточно LP для подарка.');
+        const config = StatisticsStorage.getConfig();
+        const cost = config.costGift || 200;
+        if ((buyerData.luckPoints || 0) < cost) return ui.notifications.warn('Недостаточно LP для подарка.');
         if (!game.user.isGM && !game.users.activeGM) return ui.notifications.error('Подарок невозможен: мастер не в сети.');
 
         const otherPlayers = game.users.filter((user) => user.active && user.id !== buyerId);
@@ -892,7 +905,7 @@ export class StatisticsUI extends Application {
             buttons: {
                 gift: {
                     icon: '<i class="fas fa-gift"></i>',
-                    label: 'Подарить (200 LP)',
+                    label: `Подарить (${cost} LP)`,
                     callback: async (dialogHtml) => {
                         const targetId = dialogHtml.find('[name="target-player"]').val();
                         if (!targetId) return;
@@ -913,6 +926,34 @@ export class StatisticsUI extends Application {
             },
             default: 'cancel'
         }).render(true);
+    }
+
+    async _onBuyFlashback(event) {
+        const userId = event.currentTarget.dataset.userid;
+        if (!game.user.isGM && userId !== game.user.id) return;
+
+        const config = StatisticsStorage.getConfig();
+        const cost = config.costFlashback || 500;
+        const playerData = StatisticsStorage.getPlayerData(userId);
+
+        if ((playerData.luckPoints || 0) < cost) return ui.notifications.warn('Недостаточно LP для Воспоминания.');
+        if (!game.user.isGM && !game.users.activeGM) return ui.notifications.error('Покупка невозможна: мастер не в сети.');
+
+        Dialog.confirm({
+            title: 'Использовать Воспоминание',
+            content: `<p>Вы хотите потратить <strong>${cost} LP</strong> на то, чтобы вспомнить что-то важное, что поможет вам в текущей ситуации?</p>`,
+            yes: async () => {
+                if (game.user.isGM) return StatisticsStorage.buyFlashbackForPlayer(userId);
+                
+                ui.notifications.info('Отправлен запрос на воспоминание.');
+                ChatMessage.create({
+                    content: 'Запрос на использование воспоминания...',
+                    whisper: ChatMessage.getWhisperRecipients('GM'),
+                    flags: { 'statistics_dice.flashbackRequest': true, 'statistics_dice.userId': userId }
+                });
+            },
+            defaultYes: false
+        });
     }
 
     async _onAltarDonate(event) {

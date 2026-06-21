@@ -349,12 +349,17 @@
                                 <span class="lp-label">Luck Points</span>
                                 <span class="lp-value">{{this.luckPoints}} LP</span>
                             </div>
-                            <button class="buy-benny" data-userid="{{this.id}}" {{#if (lt this.luckPoints 100)}}disabled{{/if}} title="Купить фишку (100 LP)">
+                            <button class="buy-benny" data-userid="{{this.id}}" {{#if (lt this.luckPoints ../config.costBenny)}}disabled{{/if}} title="Купить фишку ({{../config.costBenny}} LP)">
                                 <i class="fas fa-shopping-cart"></i> Купить
                             </button>
-                            <button class="gift-benny" data-userid="{{this.id}}" {{#if (lt this.luckPoints 200)}}disabled{{/if}} title="Подарить фишку (200 LP)">
+                            <button class="gift-benny" data-userid="{{this.id}}" {{#if (lt this.luckPoints ../config.costGift)}}disabled{{/if}} title="Подарить фишку ({{../config.costGift}} LP)">
                                 <i class="fas fa-gift"></i> Подарить
                             </button>
+                            {{#if ../enableFlashback}}
+                            <button class="buy-flashback" data-userid="{{this.id}}" {{#if (lt this.luckPoints ../config.costFlashback)}}disabled{{/if}} title="Воспоминание ({{../config.costFlashback}} LP)">
+                                <i class="fas fa-history"></i> Флешбек
+                            </button>
+                            {{/if}}
                         </div>
                         {{/if}}
                     </div>
@@ -375,6 +380,12 @@
                             <div class="progress-meta"><span>Подарок фишки</span><strong>{{this.economy.nextGiftText}}</strong></div>
                             <div class="lp-progress-bar secondary"><div class="lp-progress-fill" style="width: {{this.economy.giftProgress}}%;"></div></div>
                         </div>
+                        {{#if ../enableFlashback}}
+                        <div class="progress-card">
+                            <div class="progress-meta"><span>Воспоминание</span><strong>{{this.economy.nextFlashbackText}}</strong></div>
+                            <div class="lp-progress-bar flashback-progress" style="background: rgba(255,255,255,0.05); border-radius: 999px; height: 6px; overflow: hidden; margin-top: 6px;"><div class="lp-progress-fill" style="width: {{this.economy.flashbackProgress}}%; background: linear-gradient(90deg, #a881e6, #7d4bc2); height: 100%;"></div></div>
+                        </div>
+                        {{/if}}
                         {{/if}}
                     </div>
 
